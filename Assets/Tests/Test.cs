@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private EntityPresenter<Player> _entityPresenter;
+    [SerializeField] private EntityPresenter<Player, HealthPolicy> _entityPresenter;
     [SerializeField] private int _damage;
     [SerializeField] private int _heal;
 

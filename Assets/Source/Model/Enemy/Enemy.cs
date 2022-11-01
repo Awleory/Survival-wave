@@ -4,7 +4,4 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    public Enemy(CharacterHealthPolicy healthPolicy) : base(healthPolicy)
-    {
-    }
 }

@@ -4,20 +4,22 @@ using System.Xml;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterStatsConfig))]
-public class CharacterPresenter<T> : EntityPresenter<T> where T : Character
+public class CharacterPresenter<TCharacter, THealthPolicy> : 
+    EntityPresenter<TCharacter, THealthPolicy> where TCharacter : Character where THealthPolicy : CharacterHealthPolicy
 {
     [Range(Config.MinCharacterLevel, Config.MaxCharacterLevel)]
     [SerializeField] private int _startLevel = Config.MinCharacterLevel;
 
     private CharacterStatsConfig _statsConfig;
 
-    public override void Initialize(T model)
+    public override void Initialize(TCharacter model, THealthPolicy healthPolicy)
     {
-        base.Initialize(model);
-         
         _statsConfig = GetComponent<CharacterStatsConfig>();
         _statsConfig.Initialize(_startLevel);
+        model.Stats.Initialize(_statsConfig, _startLevel);
 
-        Model.Stats.Initialize(_statsConfig, _startLevel);
+        healthPolicy.Initialize(model.Stats.Vitality);
+
+        base.Initialize(model, healthPolicy);
     }
 }

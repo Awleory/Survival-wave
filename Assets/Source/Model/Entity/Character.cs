@@ -6,9 +6,8 @@ public class Character : Entity
 {
     public CharacterStats Stats { get; private set; }
 
-    public Character(CharacterHealthPolicy healthPolicy) : base(healthPolicy)
+    public Character()
     {
         Stats = new CharacterStats();
-        healthPolicy.Initialize(Stats.Vitality);
     }
 }

@@ -12,16 +12,12 @@ public class Entity : IUpdateble, IEnable
     private Rigidbody2D _rigidbody2D;
     private BoxCollider2D _boxCollider2D;
 
-    public Entity(HealthPolicy healthPolicy)
-    {
-        _health = new Health(healthPolicy);
-    }
-
-    public void Initialize(BoxCollider2D boxCollider2D, Rigidbody2D rigidbody2D)
+    public void Initialize(BoxCollider2D boxCollider2D, Rigidbody2D rigidbody2D, HealthPolicy healthPolicy)
     {
         _boxCollider2D = boxCollider2D;
         _rigidbody2D = rigidbody2D;
         MovementPhysics = new MovementPhysics(_rigidbody2D);
+        _health = new Health(healthPolicy);
     }
 
     public void OnEnable()

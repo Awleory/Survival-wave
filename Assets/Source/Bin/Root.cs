@@ -10,7 +10,7 @@ public class Root : MonoBehaviour
 
     private void Awake()
     {
-        _player = new Player(new CharacterHealthPolicy());
-        _playerPresenter.Initialize(_player);
+        _player = new Player();
+        _playerPresenter.Initialize(_player, new CharacterHealthPolicy());
     }
 }

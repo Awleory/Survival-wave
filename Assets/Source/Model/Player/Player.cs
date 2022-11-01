@@ -7,7 +7,7 @@ public class Player : Character
 {
     private Controller _controller;
 
-    public Player(CharacterHealthPolicy healthPolicy) : base(healthPolicy)
+    public Player()
     {
         _controller = new Controller(this);
     }
