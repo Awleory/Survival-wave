@@ -11,7 +11,7 @@ public class CharacterHealthPolicy : HealthPolicy
 
     private const float _healthRate = 10;
 
-    public CharacterHealthPolicy(StatAttribute characterVitality)
+    public void Initialize(StatAttribute characterVitality)
     {
         _characterVitality = characterVitality;
     }
@@ -28,7 +28,7 @@ public class CharacterHealthPolicy : HealthPolicy
 
     public override void OnEnable()
     {
-        _characterVitality.ValueChanged += OnVitalityChanged; 
+        _characterVitality.ValueChanged += OnVitalityChanged;
     }
 
     public override void OnDisable()

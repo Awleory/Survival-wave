@@ -47,12 +47,12 @@ public class Entity : IUpdateble, IEnable
 
     public void FixedUpdate(float deltaTime) { }
 
-    public void ApplyDamage(int damage, bool isPure)
+    public void ApplyDamage(int damage, bool isPure = false)
     {
         _health.ApplyDamage(damage, isPure);
     }
 
-    public void Heal(int healPoints, bool isPure)
+    public void Heal(int healPoints, bool isPure = false)
     {
         _health.ApplyHeal(healPoints, isPure);
     }

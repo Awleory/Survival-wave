@@ -22,5 +22,7 @@ public class StatAttribute
             throw new ArgumentOutOfRangeException(nameof(level));
 
         Value = _baseValue + _deltaPerLevel * level;
+
+        ValueChanged?.Invoke();
     }
 }

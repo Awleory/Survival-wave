@@ -10,13 +10,6 @@ public class CharacterStatsConfig : MonoBehaviour
     [SerializeField] private float _baseStrength = 1f;
     [Range(1f, float.MaxValue)]
     [SerializeField] private float _baseIntellect = 1f;
-    [Range(0.1f, float.MaxValue)]
-    [SerializeField] private float _VitalityRate = 1f;
-    [Range(0.1f, float.MaxValue)]
-    [SerializeField] private float _StrengthRate = 1f;
-    [Range(0.1f, float.MaxValue)]
-    [SerializeField] private float _IntellectRate = 1f;
-
     [Range(0f, float.MaxValue)]
     [SerializeField] private float _deltaVitalityPerLevel;
     [Range(0f, float.MaxValue)]

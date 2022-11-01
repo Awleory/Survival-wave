@@ -9,5 +9,6 @@ public class Character : Entity
     public Character(CharacterHealthPolicy healthPolicy) : base(healthPolicy)
     {
         Stats = new CharacterStats();
+        healthPolicy.Initialize(Stats.Vitality);
     }
 }
