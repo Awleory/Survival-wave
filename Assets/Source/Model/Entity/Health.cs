@@ -20,12 +20,12 @@ public class Health : IEnable
 
     public void OnEnable()
     {
-        _healthPolicy.MaxValueChanged += OnMaxValueChanged;
+        _healthPolicy.OnEnable();
     }
 
     public void OnDisable()
     {
-        _healthPolicy.MaxValueChanged -= OnMaxValueChanged;
+        _healthPolicy.OnDisable();
     }
 
     public void OnMaxValueChanged(int maxValue)

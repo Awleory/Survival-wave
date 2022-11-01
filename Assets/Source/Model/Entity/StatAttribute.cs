@@ -2,6 +2,7 @@ using System;
 
 public class StatAttribute 
 {
+    public event Action ValueChanged;
     public float Value { get; private set; }
 
     private float _baseValue;
