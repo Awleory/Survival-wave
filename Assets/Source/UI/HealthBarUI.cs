@@ -8,7 +8,6 @@ using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
-    [SerializeField] private Health _health;
     [SerializeField] private Color _maxValue;
     [SerializeField] private Color _highValue;
     [SerializeField] private Color _lowValue;
@@ -16,6 +15,7 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _textValue;
 
+    private Health _health;
     private string _rawTextValue = "{0}%";
     private float _maxTextValue = 100;
     private int _minSliderValue = 0;
@@ -46,6 +46,13 @@ public class HealthBarUI : MonoBehaviour
     private void OnDisable()
     {
         _health.ValueChanged -= OnUpdateSlider;
+    }
+
+    public void Initialize(Health health)
+    {
+        _health = health;
+
+        enabled = true;
     }
 
     private void OnUpdateSlider(int delta)

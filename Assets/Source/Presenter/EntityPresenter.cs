@@ -12,6 +12,8 @@ public abstract class EntityPresenter<TModel, THealthPolicy> :
     
     private TModel _model;
     private IUpdateble _updateble = null;
+    private IEnable _enable = null;
+
     private Rigidbody2D _rigidBody2D;
     private BoxCollider2D _boxCollider2D;
 
@@ -24,24 +26,17 @@ public abstract class EntityPresenter<TModel, THealthPolicy> :
         _model.Initialize(_boxCollider2D, _rigidBody2D, healthPolicy);
 
         if (_model is IUpdateble)
-        {
             _updateble = (IUpdateble)_model;
-        }
+
+        if (_model is IEnable)
+            _enable = (IEnable)_model;
 
         enabled = true;
     }
 
-    protected virtual void OnEnable()
-    {
-        _model.OnEnable();
-    }
+    private void OnEnable() => _enable?.OnEnable();
 
-    protected virtual void OnDisable()
-    {
-        _model.OnDisable();
-    }
+    private void OnDisable() => _enable?.OnDisable();
 
     private void Update() => _updateble?.Update(Time.deltaTime);
-
-    private void FixedUpdate() => _updateble?.FixedUpdate(Time.deltaTime);
 }

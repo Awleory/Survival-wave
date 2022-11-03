@@ -8,7 +8,6 @@ public class CharacterHealthPolicy : HealthPolicy
     public event Action<int> MaxValueChanged;
 
     private StatAttribute _characterVitality;
-
     private const float _healthRate = 10;
 
     public void Initialize(StatAttribute characterVitality)

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="State" Collapsed="true">
+    <Position X="13.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAJAAAAAAAAAAAAAAAAAAAAAEAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StateMachine" Collapsed="true">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAQAAAAAAACAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\StateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Config" Collapsed="true">
+    <Position X="13.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Bin\Config.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Root" Collapsed="true">
+    <Position X="9.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAACAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Source\Bin\Root.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Enemy" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Model\Enemy\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Character" Collapsed="true">
+    <Position X="1.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Model\Entity\Character.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterHealthPolicy" Collapsed="true">
+    <Position X="5.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQgAAAAAAABAQAAAAAAAAAACAAAAAAIAAAAAAABCQA=</HashCode>
+      <FileName>Assets\Source\Model\Entity\CharacterHealthPolicy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterStats" Collapsed="true">
+    <Position X="9.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAkAAAAAAQAAAAAAAAABAABBAAQBAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Model\Entity\CharacterStats.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity" Collapsed="true">
+    <Position X="1.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIYAAAAIAgEAAQCAAAAEAAAAAEAAAAAIAAAAAAAACAg=</HashCode>
+      <FileName>Assets\Source\Model\Entity\Entity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Health" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAQAAAAEAAAAAAAAACAAAAAEAAAAAIAAAgAgJICgA=</HashCode>
+      <FileName>Assets\Source\Model\Entity\Health.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HealthPolicy" Collapsed="true">
+    <Position X="5.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAABAAAAAAAAAAAAAAAAAAAIAAAAAAAACQA=</HashCode>
+      <FileName>Assets\Source\Model\Entity\HealthPolicy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StatAttribute" Collapsed="true">
+    <Position X="11.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAoAAAQAAA=</HashCode>
+      <FileName>Assets\Source\Model\Entity\StatAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MovementPhysics" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIAoAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAA=</HashCode>
+      <FileName>Assets\Source\Model\Movement\MovementPhysics.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Controller" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAEAgAAAA=</HashCode>
+      <FileName>Assets\Source\Model\Player\Controller.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="2.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Source\Model\Player\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="@PlayerInput" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAABACAACECBABAAAIAGAEEEEgBEBQAAA=</HashCode>
+      <FileName>Assets\Source\Model\Player\PlayerInput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CharacterPresenter&lt;TCharacter, THealthPolicy&gt;" Collapsed="true">
+    <Position X="1.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\Source\Presenter\CharacterPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterStatsConfig" Collapsed="true">
+    <Position X="11.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABQAkAAAAAAQAAAAAAAAAABADAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Presenter\CharacterStatsConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyPresenter" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Presenter\EnemyPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityPresenter&lt;TModel, THealthPolicy&gt;" Collapsed="true">
+    <Position X="1.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAgAACQAAAgAAAAAAAAAIAAAIAAgAAAAACAg=</HashCode>
+      <FileName>Assets\Source\Presenter\EntityPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerPresenter" Collapsed="true">
+    <Position X="2.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Presenter\PlayerPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityView" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Source\UI\EntityView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthBarUI" Collapsed="true">
+    <Position X="13.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAA0QAQAAIAAEBAAAAAAAAAAIACEIgCIACAA=</HashCode>
+      <FileName>Assets\Source\UI\HealthBarUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Test" Collapsed="true">
+    <Position X="9.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAARAAAAAAACAAAAAAAAAAAAQAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Tests\Test.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestGUI" Collapsed="true">
+    <Position X="11.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Tests\TestGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="IEnable" Collapsed="true">
+    <Position X="8" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Source\Model\Interfaces\IEnable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IUpdateble" Collapsed="true">
+    <Position X="9.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Source\Model\Interfaces\IUpdateable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
