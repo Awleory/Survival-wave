@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +9,7 @@ public class Entity<THealth> : IUpdateble, IEnable where THealth : Health
 {
     public event Action Moved;
     public Movement Movement => _movement;
+    public THealth Health => _health;
 
     protected THealth _health;
     private Movement _movement = new Movement();
@@ -55,5 +57,10 @@ public class Entity<THealth> : IUpdateble, IEnable where THealth : Health
 
     private void OnHealthChanged(float difference)
     {
+    }
+
+    public static implicit operator Entity<THealth>(Character<CharacterHealth> character)
+    {
+        return character;
     }
 }

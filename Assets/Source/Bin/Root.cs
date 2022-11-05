@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Root : MonoBehaviour
 {
@@ -12,5 +11,11 @@ public class Root : MonoBehaviour
     {
         _player = new Player<CharacterHealth>(new CharacterHealth());
         _playerPresenter.Initialize(_player);
+
+        var character = new Character<CharacterHealth>(new CharacterHealth());
+        var entity = new Entity<Health>(new Health());
+
+        Entity<Health> arch = character;
+        
     }
 }

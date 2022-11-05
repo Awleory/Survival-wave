@@ -8,7 +8,7 @@ public class EntityPresenter<TModel> : MonoBehaviour where TModel : Entity<Healt
     private IUpdateble _updateble = null;
     private IEnable _enable = null;
 
-    public virtual void Initialize(TModel model)
+    public virtual void Initialize(TModel model, Health f)
     {
         _model = model;
 
