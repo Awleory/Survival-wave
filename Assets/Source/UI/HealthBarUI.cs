@@ -55,7 +55,7 @@ public class HealthBarUI : MonoBehaviour
         enabled = true;
     }
 
-    private void OnUpdateSlider(int delta)
+    private void OnUpdateSlider(float delta)
     {
         if (_healthChangeCoroutine != null)
         {

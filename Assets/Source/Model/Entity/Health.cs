@@ -1,45 +1,29 @@
 using System;
-using UnityEngine.SocialPlatforms;
 
-public class Health : IEnable
+public class Health
 {
     public event Action Died;
-    public event Action<int> ValueChanged;
+    public event Action<float> ValueChanged;
 
-    public int Value { get; private set; }
-    public int MaxValue { get; private set; }
+    public float Value { get; private set; }
+    public float MaxValue { get; private set; }
     public bool IsAlive => Value > 0;
 
-    private HealthPolicy _healthPolicy;
+    private float _baseValue;
 
-    public Health(HealthPolicy healthPolicy)
+    public void Initialize(float baseValue)
     {
-        Value = MaxValue;
-        _healthPolicy = healthPolicy;
+        _baseValue = baseValue;
+        Value = baseValue;
+        MaxValue = baseValue;
     }
 
-    public void OnEnable()
-    {
-        _healthPolicy.OnEnable();
-    }
-
-    public void OnDisable()
-    {
-        _healthPolicy.OnDisable();
-    }
-
-    public void OnMaxValueChanged(int maxValue)
-    {
-        ResizeHealth(maxValue);
-    }
-
-    public void ApplyDamage(int damage, bool isPure = false)
+    public void ApplyDamage(float damage, DamageType type)
     {
         if (damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage));
 
-        if (isPure == false)
-            damage = _healthPolicy.CalculateDamage(damage);
+        damage = CalculateDamage(damage, type);
 
         Value = Math.Max(Value - damage, 0);
 
@@ -47,13 +31,13 @@ public class Health : IEnable
         TryDie();
     }
 
-    public void ApplyHeal(int healPoints, bool isPure = false)
+    public void ApplyHeal(float healPoints, bool isPure = false)
     {
         if (healPoints < 0)
             throw new ArgumentOutOfRangeException(nameof(healPoints));
 
         if (isPure == false)
-            healPoints = _healthPolicy.CalculateHeal(healPoints);
+            healPoints = CalculateHeal(healPoints);
 
         Value = Math.Min(Value + healPoints, MaxValue);
 
@@ -62,7 +46,7 @@ public class Health : IEnable
 
     public void Kill()
     {
-        int tempValue = Value;
+        float tempValue = Value;
         Value = 0;
 
         ValueChanged?.Invoke(-tempValue);
@@ -71,16 +55,28 @@ public class Health : IEnable
 
     public void Restore()
     {
-        int tempValue = MaxValue - Value;
+        float tempValue = MaxValue - Value;
         Value = MaxValue;
 
         ValueChanged?.Invoke(tempValue);
     }
 
-    private void ResizeHealth(int newMaxValue)
+    protected virtual float CalculateDamage(float damage, DamageType type)
     {
-        if (newMaxValue <= 0)
-            throw new ArgumentOutOfRangeException(nameof(newMaxValue));
+        return damage;
+    }
+
+    protected virtual float CalculateHeal(float healPoitns)
+    {
+        return healPoitns;
+    }
+
+    protected void ResizeHealth(float newBonusValue)
+    {
+        if (newBonusValue <= 0)
+            throw new ArgumentOutOfRangeException(nameof(newBonusValue));
+
+        float newMaxValue = _baseValue + newBonusValue;
 
         if (Value == 0 || MaxValue == 0)
         {

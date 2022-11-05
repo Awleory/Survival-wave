@@ -1,16 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class CharacterStats
 {
     public event Action LevelUp;
 
-    public StatAttribute Vitality;
-    public StatAttribute Strength;
-    public StatAttribute Intellect;
+    public StatAttribute Vitality { get; private set; } = new StatAttribute();
+    public StatAttribute Strength { get; private set; } = new StatAttribute();
+    public StatAttribute Dexterity { get; private set; } = new StatAttribute();
+    public StatAttribute Intellect { get; private set; } = new StatAttribute();
 
     private const float _expForNextLevelRate = 1.2f;
 
@@ -20,9 +17,10 @@ public class CharacterStats
 
     public void Initialize(CharacterStatsConfig statsConfig, int level)
     {
-        Vitality = statsConfig.Vitality;
-        Strength = statsConfig.Strength;
-        Intellect = statsConfig.Intellect;
+        Vitality.Initialize(statsConfig.BaseVitality, statsConfig.DeltaVitality, level);
+        Strength.Initialize(statsConfig.BaseStrength, statsConfig.DeltaStrength, level);
+        Intellect.Initialize(statsConfig.BaseIntellect, statsConfig.DeltaIntellect, level);
+        Dexterity.Initialize(statsConfig.BaseDexterity, statsConfig.DeltaDexterity, level);
 
         Level = level;
     }

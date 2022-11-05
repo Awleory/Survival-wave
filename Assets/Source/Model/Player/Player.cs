@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : Character
+public class Player<THealth> : Character<THealth> where THealth : CharacterHealth
 {
     private Controller _controller;
 
-    public Player()
-    {
-        _controller = new Controller(this);
+    public Player(THealth health) : base(health) 
+    { 
+        _controller = new Controller(Movement); 
     }
 
     public override void Update(float deltaTime)

@@ -8,7 +8,7 @@ public class StatAttribute
     private float _baseValue;
     private float _deltaPerLevel;
 
-    public StatAttribute(float baseValue, float deltaPerLevel, int level)
+    public void Initialize(float baseValue, float deltaPerLevel, int level)
     {
         _baseValue = baseValue;
         _deltaPerLevel = deltaPerLevel;

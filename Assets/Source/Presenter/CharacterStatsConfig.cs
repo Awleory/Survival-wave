@@ -1,30 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStatsConfig : MonoBehaviour
 {
-    [Range(1f, float.MaxValue)]
-    [SerializeField] private float _baseVitality = 1f;
-    [Range(1f, float.MaxValue)]
-    [SerializeField] private float _baseStrength = 1f;
-    [Range(1f, float.MaxValue)]
-    [SerializeField] private float _baseIntellect = 1f;
-    [Range(0f, float.MaxValue)]
-    [SerializeField] private float _deltaVitalityPerLevel;
-    [Range(0f, float.MaxValue)]
-    [SerializeField] private float _deltaStrengthPerLevel;
-    [Range(0f, float.MaxValue)]
-    [SerializeField] private float _deltaIntellectPerLevel;
+    [SerializeField, Min(1f)] private float _baseHealth = 100;
+    [SerializeField, Min(0f)] private float _baseSpeed = 10;
 
-    public StatAttribute Vitality { get; private set; }
-    public StatAttribute Strength { get; private set; }
-    public StatAttribute Intellect { get; private set; }
+    [SerializeField, Min(1f)] private float _baseVitality = 1f;
+    [SerializeField, Min(1f)] private float _baseStrength = 1f;
+    [SerializeField, Min(1f)] private float _baseDexterity = 1f;
+    [SerializeField, Min(1f)] private float _baseIntellect = 1f;
 
-    public void Initialize(int level)
-    {
-        Vitality = new StatAttribute(_baseVitality, _deltaVitalityPerLevel, level);
-        Strength = new StatAttribute(_baseStrength, _deltaStrengthPerLevel, level);
-        Intellect = new StatAttribute(_baseIntellect, _deltaIntellectPerLevel, level);
-    }
+    [SerializeField, Min(0f)] private float _deltaVitalityPerLevel;
+    [SerializeField, Min(0f)] private float _deltaStrengthPerLevel;
+    [SerializeField, Min(0f)] private float _deltaDexterityPerLevel;
+    [SerializeField, Min(0f)] private float _deltaIntellectPerLevel;
+
+    public float BaseHealth => _baseHealth;
+    public float BaseSpeed => _baseSpeed;
+    public float BaseVitality => _baseVitality;
+    public float BaseStrength => _baseStrength;
+    public float BaseIntellect => _baseIntellect;
+    public float BaseDexterity => _baseDexterity;
+    public float DeltaVitality => _deltaVitalityPerLevel;
+    public float DeltaStrength => _deltaStrengthPerLevel;
+    public float DeltaIntellect => _deltaIntellectPerLevel;
+    public float DeltaDexterity => _deltaDexterityPerLevel;
 }

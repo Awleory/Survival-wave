@@ -3,23 +3,20 @@ using UnityEngine;
 public class Controller : IUpdateble
 {
     private PlayerInput _input;
-    private MovementPhysics _movementPhysics;
-    private Vector2 _velocity;
-    private Entity _entity;
+    private Movement _movement;
 
-    public Controller(Entity entity)
+    public Controller(Movement movement)
     {
-        _entity = entity;
+        _movement = movement;
 
         _input = new PlayerInput();
         _input.Enable();
     }
 
-    public void FixedUpdate(float deltaTime) { }
-
     public void Update(float deltatime)
     {
-        _velocity = _input.Player.Move.ReadValue<Vector2>();
-        _entity.MovementPhysics.Move(_velocity);
+        Vector2 velocity = _input.Player.Move.ReadValue<Vector2>();
+        if (velocity != Vector2.zero)
+            _movement.Move(velocity);
     }
 }

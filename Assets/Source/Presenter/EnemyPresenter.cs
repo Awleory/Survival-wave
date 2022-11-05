@@ -1,4 +1,4 @@
 
-public class EnemyPresenter : CharacterPresenter<Enemy, CharacterHealthPolicy>
+public class EnemyPresenter : CharacterPresenter<Enemy>
 {
 }

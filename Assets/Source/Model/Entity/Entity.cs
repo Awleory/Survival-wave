@@ -4,62 +4,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Entity : IUpdateble, IEnable
+public class Entity<THealth> : IUpdateble, IEnable where THealth : Health
 {
-    public MovementPhysics MovementPhysics { get; private set; }
-  
-    private Health _health;
-    private Rigidbody2D _rigidbody2D;
-    private BoxCollider2D _boxCollider2D;
+    public event Action Moved;
+    public Movement Movement => _movement;
 
-    public void Initialize(BoxCollider2D boxCollider2D, Rigidbody2D rigidbody2D, HealthPolicy healthPolicy)
+    protected THealth _health;
+    private Movement _movement = new Movement();
+
+    public Entity(THealth health)
     {
-        _boxCollider2D = boxCollider2D;
-        _rigidbody2D = rigidbody2D;
-        MovementPhysics = new MovementPhysics(_rigidbody2D);
-        _health = new Health(healthPolicy);
+        _health = health;
     }
 
-    public void OnEnable()
+    public void Initialize(float baseHealth, float baseSpeed, AttributeBonuses attributeBonuses)
     {
-        _health.OnEnable();
+        _movement.Initialize(baseSpeed, attributeBonuses);
+        _health.Initialize(baseHealth);
+    }
 
+    public virtual void OnEnable()
+    {
         _health.Died += OnDied;
         _health.ValueChanged += OnHealthChanged;
+        _movement.Moved += Moved.Invoke;
     }
 
-    public void OnDisable()
+    public virtual void OnDisable()
     {
         _health.Died -= OnDied;
         _health.ValueChanged -= OnHealthChanged;
-
-        _health.OnDisable();
+        _movement.Moved -= Moved.Invoke;
     }
 
-    public virtual void Update(float deltaTime) 
+    public virtual void Update(float deltaTime) { }
+
+    public void ApplyDamage(int damage, DamageType type)
     {
-        MovementPhysics.Update(deltaTime);
+        _health.ApplyDamage(damage, type);
     }
 
-    public void FixedUpdate(float deltaTime) { }
-
-    public void ApplyDamage(int damage, bool isPure = false)
-    {
-        _health.ApplyDamage(damage, isPure);
-    }
-
-    public void Heal(int healPoints, bool isPure = false)
+    public void ApplyHeal(int healPoints, bool isPure = false)
     {
         _health.ApplyHeal(healPoints, isPure);
     }
    
     private void OnDied()
     {
-
     }
 
-    private void OnHealthChanged(int difference)
+    private void OnHealthChanged(float difference)
     {
-
     }
 }
