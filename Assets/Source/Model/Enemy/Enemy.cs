@@ -1,10 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class Enemy : Character<CharacterHealth>
+public class Enemy : Character
 {
-    public Enemy(CharacterHealth characterHealth) : base(characterHealth)
-    {
-    }
 }

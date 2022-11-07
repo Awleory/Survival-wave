@@ -1,8 +1,9 @@
 using System;
 
-public class CharacterStats
+public class Stats
 {
     public event Action LevelUp;
+    public event Action Updated;
 
     public StatAttribute Vitality { get; private set; } = new StatAttribute();
     public StatAttribute Strength { get; private set; } = new StatAttribute();
@@ -60,5 +61,7 @@ public class CharacterStats
         Vitality.Update(Level);
         Strength.Update(Level);
         Intellect.Update(Level);
+
+        Updated?.Invoke();
     }
 }

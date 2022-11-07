@@ -9,13 +9,13 @@ public class Health
     public float MaxValue { get; private set; }
     public bool IsAlive => Value > 0;
 
-    private float _baseValue;
+    private float _baseMaxValue;
 
-    public void Initialize(float baseValue)
+    public void Initialize(float baseMaxValue)
     {
-        _baseValue = baseValue;
-        Value = baseValue;
-        MaxValue = baseValue;
+        _baseMaxValue = baseMaxValue;
+        Value = _baseMaxValue;
+        MaxValue = _baseMaxValue;
     }
 
     public void ApplyDamage(float damage, DamageType type)
@@ -76,7 +76,7 @@ public class Health
         if (newBonusValue <= 0)
             throw new ArgumentOutOfRangeException(nameof(newBonusValue));
 
-        float newMaxValue = _baseValue + newBonusValue;
+        float newMaxValue = _baseMaxValue + newBonusValue;
 
         if (Value == 0 || MaxValue == 0)
         {

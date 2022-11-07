@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Controller : IUpdateble
+public class PlayerController : IUpdateble
 {
     private PlayerInput _input;
     private Movement _movement;
 
-    public Controller(Movement movement)
+    public PlayerController(Movement movement)
     {
         _movement = movement;
 
@@ -16,7 +16,6 @@ public class Controller : IUpdateble
     public void Update(float deltatime)
     {
         Vector2 velocity = _input.Player.Move.ReadValue<Vector2>();
-        if (velocity != Vector2.zero)
-            _movement.Move(velocity);
+        _movement.Move(velocity);
     }
 }

@@ -13,6 +13,7 @@ public class CharacterHealth : Health
     {
         _attributeBonuses = attributeBonuses;
         _attributeBonuses.HealthChanged += OnMaxValueChanged;
+        OnMaxValueChanged();
     }
 
     protected override float CalculateDamage(float damage, DamageType type)

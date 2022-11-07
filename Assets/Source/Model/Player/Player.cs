@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 
-public class Player<THealth> : Character<THealth> where THealth : CharacterHealth
+public class Player : Character
 {
-    private Controller _controller;
+    private PlayerController _controller;
 
-    public Player(THealth health) : base(health) 
+    public Player() 
     { 
-        _controller = new Controller(Movement); 
+        _controller = new PlayerController(Movement); 
     }
 
     public override void Update(float deltaTime)

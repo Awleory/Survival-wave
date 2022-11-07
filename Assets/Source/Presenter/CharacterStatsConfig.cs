@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CharacterStatsConfig : MonoBehaviour
 {
+    [Range(Config.MinCharacterLevel, Config.MaxCharacterLevel)]
+    [SerializeField] private int _baseLevel = Config.MinCharacterLevel;
     [SerializeField, Min(1f)] private float _baseHealth = 100;
     [SerializeField, Min(0f)] private float _baseSpeed = 10;
 
@@ -17,6 +19,7 @@ public class CharacterStatsConfig : MonoBehaviour
 
     public float BaseHealth => _baseHealth;
     public float BaseSpeed => _baseSpeed;
+    public int BaseLevel => _baseLevel;
     public float BaseVitality => _baseVitality;
     public float BaseStrength => _baseStrength;
     public float BaseIntellect => _baseIntellect;

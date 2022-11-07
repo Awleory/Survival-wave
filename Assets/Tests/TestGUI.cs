@@ -20,5 +20,10 @@ public class TestGUI : Editor
         {
             test.Heal();
         }
+
+        if (GUILayout.Button("Up level"))
+        {
+            test.UpLevel();
+        }
     }
 }

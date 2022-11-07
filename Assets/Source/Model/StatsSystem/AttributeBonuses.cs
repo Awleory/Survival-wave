@@ -13,14 +13,14 @@ public class AttributeBonuses
     public float MagicArmor => _magicArmorRate * _characterStats.Intellect.Value;
     public float SelfHealing => _characterStats.Intellect.Value * _selfHealinglfRate;
 
-    private CharacterStats _characterStats;
+    private Stats _characterStats;
     private const float _runSpeedRate = 0.2f;
     private const float _healthRate = 10;
     private const float _armorRate = 0.4f;
     private const float _magicArmorRate = 0.5f;
-    private const float _selfHealinglfRate = 0.2f;
+    private const float _selfHealinglfRate = 0.02f;
 
-    public AttributeBonuses(CharacterStats characterStats)
+    public AttributeBonuses(Stats characterStats)
     {
         _characterStats = characterStats;
 

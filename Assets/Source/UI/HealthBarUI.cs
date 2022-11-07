@@ -1,26 +1,17 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
-    [SerializeField] private Color _maxValue;
-    [SerializeField] private Color _highValue;
-    [SerializeField] private Color _lowValue;
-    [SerializeField] private Vector2 _offset;
-    [SerializeField] private Slider _slider;
+    [SerializeField] private bool _hideWhenFull = false;
+    [SerializeField] private bool _showText = true;
+    [SerializeField] private float _fillSpeedRate = 1; 
     [SerializeField] private TextMeshProUGUI _textValue;
+    [SerializeField] private Image _fillArea;
 
-    private Health _health;
-    private string _rawTextValue = "{0}%";
-    private float _maxTextValue = 100;
-    private int _minSliderValue = 0;
-    private int _maxSliderValue = 1;
-    private Coroutine _healthChangeCoroutine;
     private float _normalizedHealth
     {
         get
@@ -32,15 +23,17 @@ public class HealthBarUI : MonoBehaviour
         }
     }
 
+    private Health _health;
+    private string _rawTextValue = "{0}/{1}";
+    private Coroutine _healthChangeCoroutine;
+
     private void OnEnable()
     {
         _health.ValueChanged += OnUpdateSlider;
 
-        _slider.minValue = _minSliderValue;
-        _slider.maxValue = _maxSliderValue;
-        _slider.value = _normalizedHealth;
+        _fillArea.fillAmount = _normalizedHealth;
 
-        _textValue.text = string.Format(_rawTextValue, _slider.value * _maxTextValue);
+        Format(_health.Value, _health.MaxValue);
     }
 
     private void OnDisable()
@@ -53,9 +46,10 @@ public class HealthBarUI : MonoBehaviour
         _health = health;
 
         enabled = true;
+        OnUpdateSlider();
     }
 
-    private void OnUpdateSlider(float delta)
+    private void OnUpdateSlider(float delta = 0)
     {
         if (_healthChangeCoroutine != null)
         {
@@ -68,14 +62,29 @@ public class HealthBarUI : MonoBehaviour
     {
         int decimalPlaces = 2;
 
-        while (_slider.value != targetValue)
+        if (_fillArea.fillAmount == targetValue)
         {
-            _slider.value = Mathf.MoveTowards(_slider.value, targetValue, Time.deltaTime);
+            Format(_health.Value, _health.MaxValue);
+        }
 
-            float roundedTargetValue = (float)Math.Round((double)(_slider.value), decimalPlaces);
-            _textValue.text = string.Format(_rawTextValue, roundedTargetValue * _maxTextValue);
+        while (_fillArea.fillAmount != targetValue)
+        {
+            _fillArea.fillAmount = Mathf.MoveTowards(_fillArea.fillAmount, targetValue, Time.deltaTime * _fillSpeedRate);
+            float roundedCurrentValue = (float)Math.Round((double)(_fillArea.fillAmount * _health.MaxValue), decimalPlaces);
+            Format(roundedCurrentValue, _health.MaxValue);
             yield return null;
         }
         _healthChangeCoroutine = null;
+    }
+
+    private void Format(float value, float maxValue)
+    {
+        if (_showText)
+            _textValue.text = string.Format(_rawTextValue, (int)value, maxValue);
+        else if (_textValue.gameObject.activeInHierarchy)
+            _textValue.gameObject.SetActive(false);
+
+        if (_hideWhenFull)
+            gameObject.SetActive(_health.Value != _health.MaxValue);
     }
 }

@@ -21,7 +21,8 @@ public class Movement : IMovable, IUpdateble
     {
         _baseSpeed = baseSpeed;
         _attributeBonuses = attributeBonuses;
-        _attributeBonuses.SpeedChanged += OnSpeedChanged;  
+        _attributeBonuses.SpeedChanged += OnSpeedChanged;
+        OnSpeedChanged();
     }
 
     public void Move(Vector2 direction)
@@ -32,11 +33,11 @@ public class Movement : IMovable, IUpdateble
 
     public void Update(float deltaTime)
     {
-        Position = Vector2.MoveTowards(Position, _directionVelocity, Speed * deltaTime);
+        Position = Vector2.MoveTowards(Position, Position + _directionVelocity, Speed * deltaTime);
     }
 
     private void OnSpeedChanged()
     {
-        Speed = Math.Max(_baseSpeed + _attributeBonuses.Speed, Config.MaxRunSpeed);
+        Speed = Math.Min(_baseSpeed + _attributeBonuses.Speed, Config.MaxRunSpeed);
     }
 }
