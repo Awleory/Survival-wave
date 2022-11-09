@@ -1,10 +1,12 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterStatsConfig))]
+[RequireComponent (typeof(AnimationController))]
 public class CharacterPresenter<TModel> : MonoBehaviour where TModel : Character
 {
     [SerializeField] private HealthBarUI _healthBarUI;
 
+    public Animator Animator { get; private set; }
     public TModel Model => _model;
 
     private TModel _model;
@@ -15,6 +17,8 @@ public class CharacterPresenter<TModel> : MonoBehaviour where TModel : Character
     {
         _model = model;
         _model.Initialize(GetComponent<CharacterStatsConfig>());
+
+        GetComponent<AnimationController>().Initialize(_model);
 
         _healthBarUI.Initialize(_model.Health);
 
@@ -27,19 +31,19 @@ public class CharacterPresenter<TModel> : MonoBehaviour where TModel : Character
         enabled = true;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _enable?.OnEnable();
-        _model.Moved += OnMoved;
+        _model.Movement.Moved += OnMoved;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _enable?.OnDisable();
-        _model.Moved -= OnMoved;
+        _model.Movement.Moved -= OnMoved;
     }
 
-    private void Update() => _updateble?.Update(Time.deltaTime);
+    protected virtual void Update() => _updateble?.Update(Time.deltaTime);
 
     private void OnMoved()
     {

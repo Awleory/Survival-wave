@@ -2,11 +2,11 @@ using System;
 
 public class Character : IUpdateble, IEnable
 {
-    public event Action Moved;
     public Movement Movement => _movement;
     public Stats Stats => _stats;
     public AttributeBonuses AttributeBonuses => _attributeBonuses;
     public Health Health => _health;
+    public float SpeedAttack { get; private set; }
 
     private Movement _movement;
     private CharacterHealth _health;
@@ -33,14 +33,12 @@ public class Character : IUpdateble, IEnable
     {
         _health.Died += OnDied;
         _health.ValueChanged += OnHealthChanged;
-        _movement.Moved += OnMoved;
     }
 
     public virtual void OnDisable()
     {
         _health.Died -= OnDied;
         _health.ValueChanged -= OnHealthChanged;
-        _movement.Moved -= OnMoved;
     }
 
     public virtual void Update(float deltaTime) 
@@ -64,10 +62,5 @@ public class Character : IUpdateble, IEnable
 
     private void OnHealthChanged(float difference)
     {
-    }
-
-    private void OnMoved()
-    {
-        Moved.Invoke();
     }
 }

@@ -4,7 +4,10 @@ using UnityEngine;
 public class Movement : IMovable, IUpdateble
 {
     public event Action Moved;
-    
+    public event Action StoppedMove;
+
+    public Vector2 Direction => _directionVelocity;
+
     private float _baseSpeed;
     private AttributeBonuses _attributeBonuses;
     private Vector2 _directionVelocity;
@@ -27,8 +30,16 @@ public class Movement : IMovable, IUpdateble
 
     public void Move(Vector2 direction)
     {
-        _directionVelocity = direction;
-        Moved?.Invoke();
+        if (_directionVelocity != direction || direction != Vector2.zero)
+        {
+            _directionVelocity = direction;
+            Moved?.Invoke();
+        }
+
+        if (direction == Vector2.zero)
+        {
+            StoppedMove?.Invoke();
+        }
     }
 
     public void Update(float deltaTime)

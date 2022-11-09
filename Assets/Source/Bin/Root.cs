@@ -3,13 +3,16 @@ using UnityEngine;
 public class Root : MonoBehaviour
 {
     [SerializeField] private PlayerPresenter _playerPresenter;
+    [SerializeField] private EnemyPresentersFactory _enemyPresentersFactory;
 
-    public Player Player { get; private set; }
+    private Player _player;
 
     private void Awake()
     {
-        Player = new Player();
+        _player = new Player();
 
-        _playerPresenter.Initialize(Player);
+        _playerPresenter.Initialize(_player);
+
+        _enemyPresentersFactory.CreateSimpleEnemy(new SimpleEnemy(_player));
     }
 }
