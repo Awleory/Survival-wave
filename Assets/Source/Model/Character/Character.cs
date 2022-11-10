@@ -1,4 +1,3 @@
-using System;
 
 public class Character : IUpdateble, IEnable
 {
@@ -7,11 +6,13 @@ public class Character : IUpdateble, IEnable
     public AttributeBonuses AttributeBonuses => _attributeBonuses;
     public Health Health => _health;
     public float SpeedAttack { get; private set; }
+    public float Damage => _attributeBonuses.Damage + _baseDamage;
 
     private Movement _movement;
     private CharacterHealth _health;
     private Stats _stats;
     private AttributeBonuses _attributeBonuses;
+    private float _baseDamage;
 
     public Character()
     {
@@ -27,6 +28,7 @@ public class Character : IUpdateble, IEnable
         _health.Initialize(statsConfig.BaseHealth);
         _health.Initialize(_attributeBonuses);
         _movement.Initialize(statsConfig.BaseSpeed, _attributeBonuses);
+        _baseDamage = statsConfig.BaseDamage;
     }
 
     public virtual void OnEnable()
@@ -46,12 +48,12 @@ public class Character : IUpdateble, IEnable
         _movement.Update(deltaTime);
     }
 
-    public void ApplyDamage(int damage, DamageType type)
+    public void ApplyDamage(float damage, DamageType type)
     {
         _health.ApplyDamage(damage, type);
     }
 
-    public void ApplyHeal(int healPoints, bool isPure = false)
+    public void ApplyHeal(float healPoints, bool isPure = false)
     {
         _health.ApplyHeal(healPoints, isPure);
     }

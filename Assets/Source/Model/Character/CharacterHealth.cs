@@ -23,11 +23,9 @@ public class CharacterHealth : Health
             case DamageType.Pure:
                 return damage;
             case DamageType.Magic:
-                damage -= Math.Max(_attributeBonuses.MagicArmor, 0);
-                return damage;
+                return damage - damage * _attributeBonuses.MagicResist;
             case DamageType.Physical:
-                damage -= Math.Max(_attributeBonuses.Armor, 0);
-                return damage;
+                return damage - damage * _attributeBonuses.PhysicalResist;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type));
         }

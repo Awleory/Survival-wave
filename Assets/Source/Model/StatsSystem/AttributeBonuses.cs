@@ -12,13 +12,18 @@ public class AttributeBonuses
     public float Armor => _armorRate * _characterStats.Strength.Value;
     public float MagicArmor => _magicArmorRate * _characterStats.Intellect.Value;
     public float SelfHealing => _characterStats.Intellect.Value * _selfHealinglfRate;
+    public float Damage => _characterStats.Strength.Value * _damageRate;
+    public float PhysicalResist => CalculateRateDecline(Armor);
+    public float MagicResist => CalculateRateDecline(MagicArmor);
 
     private Stats _characterStats;
-    private const float _runSpeedRate = 0.2f;
+    private const float _runSpeedRate = 0.02f;
     private const float _healthRate = 10;
-    private const float _armorRate = 0.4f;
-    private const float _magicArmorRate = 0.5f;
+    private const float _armorRate = 0.06f;
+    private const float _magicArmorRate = 0.06f;
     private const float _selfHealinglfRate = 0.02f;
+    private const float _damageRate = 0.4f;
+    private const float _resistRate = 0.06f;
 
     public AttributeBonuses(Stats characterStats)
     {
@@ -56,5 +61,10 @@ public class AttributeBonuses
     private void OnMagicArmorChanged()
     {
         MagicArmorChanged?.Invoke();
+    }
+
+    private float CalculateRateDecline(float ratePoints)
+    {
+        return _resistRate * ratePoints / (1 + _resistRate * ratePoints);
     }
 }

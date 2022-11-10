@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PlayerPresenter : CharacterPresenter<Player>
@@ -9,6 +8,15 @@ public class PlayerPresenter : CharacterPresenter<Player>
     {
         base.Initialize(model);
 
-        _playerInfoUI.Initialize(model.Stats);
+        _playerInfoUI.Initialize(model.Stats, model.AttributeBonuses);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<EnemyTag>(out EnemyTag enemyTag))
+        {
+            Model.ApplyDamage(enemyTag.Model.Damage, DamageType.Physical);
+            Debug.Log("damage " + enemyTag.Model.Damage);
+        }
     }
 }

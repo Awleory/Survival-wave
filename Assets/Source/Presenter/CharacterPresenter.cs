@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterStatsConfig))]
 [RequireComponent (typeof(AnimationController))]
+[RequireComponent (typeof(BoxCollider2D))]
 public class CharacterPresenter<TModel> : MonoBehaviour where TModel : Character
 {
     [SerializeField] private HealthBarUI _healthBarUI;

@@ -33,7 +33,7 @@ public class HealthBarUI : MonoBehaviour
 
         _fillArea.fillAmount = _normalizedHealth;
 
-        Format(_health.Value, _health.MaxValue);
+        UpdateHealthText();
     }
 
     private void OnDisable()
@@ -64,23 +64,23 @@ public class HealthBarUI : MonoBehaviour
 
         if (_fillArea.fillAmount == targetValue)
         {
-            Format(_health.Value, _health.MaxValue);
+            UpdateHealthText();
         }
 
         while (_fillArea.fillAmount != targetValue)
         {
             _fillArea.fillAmount = Mathf.MoveTowards(_fillArea.fillAmount, targetValue, Time.deltaTime * _fillSpeedRate);
             float roundedCurrentValue = (float)Math.Round((double)(_fillArea.fillAmount * _health.MaxValue), decimalPlaces);
-            Format(roundedCurrentValue, _health.MaxValue);
+            UpdateHealthText();
             yield return null;
         }
         _healthChangeCoroutine = null;
     }
 
-    private void Format(float value, float maxValue)
+    private void UpdateHealthText()
     {
         if (_showText)
-            _textValue.text = string.Format(_rawTextValue, (int)value, maxValue);
+            _textValue.text = string.Format(_rawTextValue, (int)_health.Value, _health.MaxValue);
         else if (_textValue.gameObject.activeInHierarchy)
             _textValue.gameObject.SetActive(false);
 
