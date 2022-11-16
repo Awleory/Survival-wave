@@ -6,13 +6,13 @@ public class CharacterHealth : Health
 
     ~CharacterHealth()
     {
-        _attributeBonuses.HealthChanged -= OnMaxValueChanged;
+        _attributeBonuses.Changed -= OnMaxValueChanged;
     }
 
     public void Initialize(AttributeBonuses attributeBonuses)
     {
         _attributeBonuses = attributeBonuses;
-        _attributeBonuses.HealthChanged += OnMaxValueChanged;
+        _attributeBonuses.Changed += OnMaxValueChanged;
         OnMaxValueChanged();
     }
 

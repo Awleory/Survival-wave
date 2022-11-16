@@ -1,6 +1,6 @@
 using System;
 
-public class Stats
+public class Stats : IStartable
 {
     public event Action LevelUp;
     public event Action Updated;
@@ -24,6 +24,11 @@ public class Stats
         Dexterity.Initialize(statsConfig.BaseDexterity, statsConfig.DeltaDexterity, level);
 
         Level = level;
+    }
+
+    public void Start()
+    {
+        Update();
     }
 
     public void TakeExp(int expPoints)

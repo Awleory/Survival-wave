@@ -6,6 +6,7 @@ public class CharacterStatsConfig : MonoBehaviour
     [SerializeField] private int _baseLevel = Config.MinCharacterLevel;
     [SerializeField, Min(1f)] private float _baseHealth = 100;
     [SerializeField, Min(0f)] private float _baseSpeed = 10;
+    [SerializeField, Min(0.1f)] private float _baseAttackSpeed = 1;
     [SerializeField, Min(1f)] private float _baseDamage = 10;
 
     [SerializeField, Min(1f)] private float _baseVitality = 1f;
@@ -21,6 +22,7 @@ public class CharacterStatsConfig : MonoBehaviour
     public float BaseHealth => _baseHealth;
     public float BaseSpeed => _baseSpeed;
     public float BaseDamage => _baseDamage;
+    public float BaseAttackSpeed => _baseAttackSpeed;
     public int BaseLevel => _baseLevel;
     public float BaseVitality => _baseVitality;
     public float BaseStrength => _baseStrength;

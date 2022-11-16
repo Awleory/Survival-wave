@@ -13,6 +13,7 @@ public class EnemyPresentersFactory : MonoBehaviour
     {
         CharacterPresenter<SimpleEnemy> enemyPresenter = Instantiate(enemyTemplate);
         enemyPresenter.Initialize(model);
+        enemyPresenter.EndInitialize();
         return enemyPresenter;
     }
 }

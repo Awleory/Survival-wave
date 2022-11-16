@@ -3,20 +3,22 @@ using UnityEngine;
 public class PlayerPresenter : CharacterPresenter<Player>
 {
     [SerializeField] private PlayerInfoUI _playerInfoUI;
+    [SerializeField] private WeaponPresenter _weaponTemplate;
+    [SerializeField] private Transform _weaponPoint;
 
     public override void Initialize(Player model)
     {
         base.Initialize(model);
 
-        _playerInfoUI.Initialize(model.Stats, model.AttributeBonuses);
+        WeaponPresenter weaponPresenter = Instantiate(_weaponTemplate, _weaponPoint);
+        weaponPresenter.Initialize(model.Weapon);
+        weaponPresenter.EndInitialize();
+
+        _playerInfoUI?.Initialize(model.Stats, model.AttributeBonuses);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnDied()
     {
-        if (collision.gameObject.TryGetComponent<EnemyTag>(out EnemyTag enemyTag))
-        {
-            Model.ApplyDamage(enemyTag.Model.Damage, DamageType.Physical);
-            Debug.Log("damage " + enemyTag.Model.Damage);
-        }
+        Debug.Log("ты сдох лох");
     }
 }

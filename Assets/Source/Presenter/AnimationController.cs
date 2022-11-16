@@ -5,34 +5,34 @@ using UnityEngine;
 public class AnimationController : MonoBehaviour
 {
     [SerializeField] private bool _flipX;
-
-    public Animator Animator => _animator;
+    [SerializeField] private bool _flipY;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
-    private Character _model;
 
-    private const string _runParameter = "Run";
-
-    public void Initialize(Character model)
+    private void Awake()
     {
-        _model = model;
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-
-        enabled = true;
     }
 
-    private void OnEnable()
+    public void OnMoved(string moveParameter, Vector2 direction)
     {
-        _model.Movement.StoppedMove += OnStoppedMove;
-        _model.Movement.Moved += OnMoved;
+        if (direction.x != 0)
+            SetFlipX(direction.x < 0);
+
+        _animator.SetBool(moveParameter, true);
     }
 
-    private void OnDisable()
+    public void OnStoppedMove(string moveParameter)
     {
-        _model.Movement.StoppedMove -= OnStoppedMove;
-        _model.Movement.Moved -= OnMoved;
+        _animator.SetBool(moveParameter, false);
+    }
+
+    public void OnRotated(Vector2 direction)
+    {
+        if (direction.x != 0)
+            SetFlipY(direction.x < 0);
     }
 
     private void SetFlipX(bool state)
@@ -40,16 +40,8 @@ public class AnimationController : MonoBehaviour
         _spriteRenderer.flipX = _flipX ? !state : state;
     }
 
-    private void OnStoppedMove()
+    private void SetFlipY(bool state)
     {
-        _animator.SetBool(_runParameter, false);
-    }
-
-    private void OnMoved()
-    {
-        if (_model.Movement.Direction.x != 0)
-            SetFlipX(_model.Movement.Direction.x < 0);
-
-        _animator.SetBool(_runParameter, true);
+        _spriteRenderer.flipY = _flipY ? !state : state;
     }
 }

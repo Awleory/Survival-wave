@@ -12,6 +12,7 @@ public class Root : MonoBehaviour
         _player = new Player();
 
         _playerPresenter.Initialize(_player);
+        _playerPresenter.EndInitialize();
 
         _enemyPresentersFactory.CreateSimpleEnemy(new SimpleEnemy(_player));
     }

@@ -1,21 +1,31 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : IUpdateble
 {
+    public event Action Shot;
+
+    public Vector2 MousePosition { get; private set; }
+    public Vector2 Velocity { get; private set; }
+
     private PlayerInput _input;
-    private Movement _movement;
 
-    public PlayerController(Movement movement)
+    public PlayerController()
     {
-        _movement = movement;
-
         _input = new PlayerInput();
         _input.Enable();
+        
+        _input.Player.Shoot.performed += context => OnShoot();
     }
 
     public void Update(float deltatime)
     {
-        Vector2 velocity = _input.Player.Move.ReadValue<Vector2>();
-        _movement.Move(velocity);
+        Velocity = _input.Player.Move.ReadValue<Vector2>();
+        MousePosition = _input.Player.MousePosition.ReadValue<Vector2>();
+    }
+
+    private void OnShoot()
+    {
+        Shot?.Invoke();
     }
 }

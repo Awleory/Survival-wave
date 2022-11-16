@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &279932274096411730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7864117084014349129}
+  m_Layer: 0
+  m_Name: WeaponPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7864117084014349129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279932274096411730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.402, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4089422105538949020}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4089422105538949018
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +67,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4089422107627235472}
+  - {fileID: 7864117084014349129}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,8 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseLevel: 1
-  _baseHealth: 10
+  _baseHealth: 100
   _baseSpeed: 5
+  _baseAttackSpeed: 1
   _baseDamage: 10
   _baseVitality: 10
   _baseStrength: 8
@@ -129,6 +162,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarUI: {fileID: 0}
   _playerInfoUI: {fileID: 0}
+  _weaponTemplate: {fileID: 5393890377837976933, guid: 2e67a2d19a9629249a756a3daba9ad29, type: 3}
+  _weaponPoint: {fileID: 7864117084014349129}
 --- !u!95 &8589322353181788834
 Animator:
   serializedVersion: 4
@@ -162,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flipX: 0
+  _flipY: 0
 --- !u!61 &6185457150762235908
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -235,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4089422107627235436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.05313476, y: -0.24008958, z: -13.333334}
+  m_LocalPosition: {x: 0, y: 0, z: -13.333334}
   m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 1.3333334}
   m_ConstrainProportionsScale: 0
   m_Children: []

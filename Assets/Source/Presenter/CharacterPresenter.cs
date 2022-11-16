@@ -1,53 +1,52 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterStatsConfig))]
-[RequireComponent (typeof(AnimationController))]
 [RequireComponent (typeof(BoxCollider2D))]
-public class CharacterPresenter<TModel> : MonoBehaviour where TModel : Character
+public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Character
 {
     [SerializeField] private HealthBarUI _healthBarUI;
 
-    public Animator Animator { get; private set; }
-    public TModel Model => _model;
+    private const string _runParameter = "Run";
 
-    private TModel _model;
-    private IUpdateble _updateble = null;
-    private IEnable _enable = null;
-
-    public virtual void Initialize(TModel model)
+    public override void Initialize(TModel model)
     {
-        _model = model;
-        _model.Initialize(GetComponent<CharacterStatsConfig>());
+        base.Initialize(model);
+        Model.Initialize(GetComponent<CharacterStatsConfig>());
 
-        GetComponent<AnimationController>().Initialize(_model);
-
-        _healthBarUI.Initialize(_model.Health);
-
-        if (_model is IUpdateble)
-            _updateble = (IUpdateble)_model;
-
-        if (_model is IEnable)
-            _enable = (IEnable)_model;
-
-        enabled = true;
+        _healthBarUI?.Initialize(Model.Health);
     }
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
-        _enable?.OnEnable();
-        _model.Movement.Moved += OnMoved;
+        base.OnEnable();
+
+        Model.Movement.Moved += OnMoved;
+        Model.Movement.StoppedMove += OnStoppedMove;
+        Model.Died += OnDied;
     }
 
-    protected virtual void OnDisable()
+    protected override void OnDisable()
     {
-        _enable?.OnDisable();
-        _model.Movement.Moved -= OnMoved;
-    }
+        base.OnDisable();
 
-    protected virtual void Update() => _updateble?.Update(Time.deltaTime);
+        Model.Movement.Moved += OnMoved;
+        Model.Movement.StoppedMove -= OnStoppedMove;
+        Model.Died -= OnDied;
+    }
 
     private void OnMoved()
     {
-        transform.position = _model.Movement.Position;
+        transform.position = Model.Movement.Position;
+        AnimationController.OnMoved(_runParameter, Model.Movement.Direction);
+    }
+
+    private void OnStoppedMove()
+    {
+        AnimationController.OnStoppedMove(_runParameter);
+    }
+
+    protected virtual void OnDied()
+    {
+        Destroy(gameObject);
     }
 }

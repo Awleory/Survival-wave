@@ -1,11 +1,16 @@
+using System;
+using UnityEngine;
 
-public class Character : IUpdateble, IEnable
+public class Character : IUpdateble, IStartable, IEnable
 {
+    public event Action Died;
+
     public Movement Movement => _movement;
     public Stats Stats => _stats;
     public AttributeBonuses AttributeBonuses => _attributeBonuses;
     public Health Health => _health;
-    public float SpeedAttack { get; private set; }
+    public float SpeedAttack => _baseAttackSpeed * _attributeBonuses.AttackSpeed;
+    public float AttacksPerSecond => 1 / SpeedAttack;
     public float Damage => _attributeBonuses.Damage + _baseDamage;
 
     private Movement _movement;
@@ -13,6 +18,7 @@ public class Character : IUpdateble, IEnable
     private Stats _stats;
     private AttributeBonuses _attributeBonuses;
     private float _baseDamage;
+    private float _baseAttackSpeed;
 
     public Character()
     {
@@ -27,20 +33,28 @@ public class Character : IUpdateble, IEnable
         _stats.Initialize(statsConfig, statsConfig.BaseLevel);
         _health.Initialize(statsConfig.BaseHealth);
         _health.Initialize(_attributeBonuses);
-        _movement.Initialize(statsConfig.BaseSpeed, _attributeBonuses);
+        _movement.Initialize(statsConfig.BaseSpeed, Vector2.zero);
         _baseDamage = statsConfig.BaseDamage;
+        _baseAttackSpeed = statsConfig.BaseAttackSpeed;
+    }
+
+    public virtual void Start()
+    {
+        _stats.Start();
     }
 
     public virtual void OnEnable()
     {
         _health.Died += OnDied;
         _health.ValueChanged += OnHealthChanged;
+        _attributeBonuses.Changed += OnAttributeBonusesUpdated;
     }
 
     public virtual void OnDisable()
     {
         _health.Died -= OnDied;
         _health.ValueChanged -= OnHealthChanged;
+        _attributeBonuses.Changed -= OnAttributeBonusesUpdated;
     }
 
     public virtual void Update(float deltaTime) 
@@ -60,9 +74,15 @@ public class Character : IUpdateble, IEnable
    
     private void OnDied()
     {
+        Died?.Invoke();
     }
 
     private void OnHealthChanged(float difference)
     {
+    }
+
+    protected virtual void OnAttributeBonusesUpdated() 
+    {
+        _movement.OnBonusSpeedChanged(_attributeBonuses.Speed);
     }
 }
