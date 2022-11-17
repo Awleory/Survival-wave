@@ -28,12 +28,12 @@ public class Character : IUpdateble, IStartable, IEnable
         _attributeBonuses = new AttributeBonuses(_stats);
     }
 
-    public void Initialize(CharacterStatsConfig statsConfig)
+    public void Initialize(CharacterStatsConfig statsConfig, Vector2 startPosition)
     {
         _stats.Initialize(statsConfig, statsConfig.BaseLevel);
         _health.Initialize(statsConfig.BaseHealth);
         _health.Initialize(_attributeBonuses);
-        _movement.Initialize(statsConfig.BaseSpeed, Vector2.zero);
+        _movement.Initialize(statsConfig.BaseSpeed, startPosition);
         _baseDamage = statsConfig.BaseDamage;
         _baseAttackSpeed = statsConfig.BaseAttackSpeed;
     }
@@ -72,6 +72,11 @@ public class Character : IUpdateble, IStartable, IEnable
         _health.ApplyHeal(healPoints, isPure);
     }
    
+    public void TakeExp(int expPoints)
+    {
+        _stats.TakeExp(expPoints);
+    }
+
     private void OnDied()
     {
         Died?.Invoke();

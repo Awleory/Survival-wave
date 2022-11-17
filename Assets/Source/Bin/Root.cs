@@ -4,6 +4,7 @@ public class Root : MonoBehaviour
 {
     [SerializeField] private PlayerPresenter _playerPresenter;
     [SerializeField] private EnemyPresentersFactory _enemyPresentersFactory;
+    [SerializeField] private EnemySpawner _enemySpawner;
 
     private Player _player;
 
@@ -14,6 +15,6 @@ public class Root : MonoBehaviour
         _playerPresenter.Initialize(_player);
         _playerPresenter.EndInitialize();
 
-        _enemyPresentersFactory.CreateSimpleEnemy(new SimpleEnemy(_player));
+        _enemySpawner.Initialize(_player);
     }
 }

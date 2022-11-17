@@ -5,7 +5,7 @@ public class PlayerController : IUpdateble
 {
     public event Action Shot;
 
-    public Vector2 MousePosition { get; private set; }
+    public Vector2 ScreenMousePosition { get; private set; }
     public Vector2 Velocity { get; private set; }
 
     private PlayerInput _input;
@@ -21,7 +21,7 @@ public class PlayerController : IUpdateble
     public void Update(float deltatime)
     {
         Velocity = _input.Player.Move.ReadValue<Vector2>();
-        MousePosition = _input.Player.MousePosition.ReadValue<Vector2>();
+        ScreenMousePosition = _input.Player.MousePosition.ReadValue<Vector2>();
     }
 
     private void OnShoot()

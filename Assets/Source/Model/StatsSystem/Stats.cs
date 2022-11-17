@@ -47,7 +47,8 @@ public class Stats : IStartable
             }
             else
             {
-                CurrentExp = expPoints;
+                CurrentExp += expPoints;
+                expPoints = 0;
             }
         }
     }

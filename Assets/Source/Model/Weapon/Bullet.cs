@@ -43,11 +43,14 @@ public class Bullet : IUpdateble
 
     public void ProcessCollision(Character character)
     {
+        if (_targetHits >= _maxTargetHits)
+        {
+            Destroy();
+            return;
+        }
+
         character.ApplyDamage(Damage, DamageType);
         _targetHits++;
-
-        if (_targetHits >= _maxTargetHits)
-            Destroy();
     }
 
     private void OnMoved()

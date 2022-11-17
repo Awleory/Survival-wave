@@ -4,9 +4,7 @@ using UnityEngine;
 public class Weapon : IUpdateble, IEnable
 {
     public event Action Shot;
-    public event Action Rotated;
-
-    public Vector2 Direction { get; private set; }
+    public event Action<Vector2> Rotated;
 
     private float _shootsPerSecond => 1 / _shootingSpeed;
     private float _shootingSpeed;
@@ -49,11 +47,9 @@ public class Weapon : IUpdateble, IEnable
         }
     }
 
-    public void OnMouseMoved(Vector2 mousePosition)
+    public void OnMouseMoved(Vector2 screenMousePosition)
     {
-        mousePosition += new Vector2(0f, 0.05f);
-        Direction = mousePosition.normalized;
-        Rotated?.Invoke();
+        Rotated?.Invoke(screenMousePosition);
     }
 
     private void OnTimerGotReady(int actionID)

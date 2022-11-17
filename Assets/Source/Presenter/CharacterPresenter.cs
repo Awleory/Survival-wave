@@ -11,7 +11,7 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
     public override void Initialize(TModel model)
     {
         base.Initialize(model);
-        Model.Initialize(GetComponent<CharacterStatsConfig>());
+        Model.Initialize(GetComponent<CharacterStatsConfig>(), transform.position);
 
         _healthBarUI?.Initialize(Model.Health);
     }

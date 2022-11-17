@@ -4,12 +4,7 @@ public class Player : Character
 {
     public Weapon Weapon { get; private set; }
 
-    public Vector2 MousePosition => _mousePositionScale * ((Vector2)Camera.main.ScreenToViewportPoint(_controller.MousePosition) + _mouseOffset);
-
     private PlayerController _controller;
-
-    private Vector2 _mouseOffset = new Vector2(-0.5f, -0.5f);
-    private const float _mousePositionScale = 2;
 
     public Player()
     {
@@ -40,7 +35,7 @@ public class Player : Character
 
         Movement.Move(_controller.Velocity);
 
-        Weapon.OnMouseMoved(MousePosition);
+        Weapon.OnMouseMoved(_controller.ScreenMousePosition);
     }
 
     private void OnShoot()

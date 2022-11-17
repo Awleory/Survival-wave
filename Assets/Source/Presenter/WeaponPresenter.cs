@@ -6,6 +6,8 @@ public class WeaponPresenter : Presenter<Weapon>
     [SerializeField] private BulletPresenter _bulletPresenter;
     [SerializeField] private Transform _gunPoint;
 
+    private Vector2 _direction;
+
     public override void Initialize(Weapon weapon)
     {
         base.Initialize(weapon);
@@ -31,16 +33,18 @@ public class WeaponPresenter : Presenter<Weapon>
 
     private void OnShot()
     {
-        BulletPresenter bullet = Instantiate(_bulletPresenter, _gunPoint.position, Quaternion.identity);
-        bullet.Initialize(Model.Direction);
-        bullet.EndInitialize();
+        BulletPresenter bulletPresenter = Instantiate(_bulletPresenter, _gunPoint.position, Quaternion.identity);
+        bulletPresenter.Initialize(_direction); Debugger.UpdateText("_direction", _direction);
+        bulletPresenter.EndInitialize();
     }
 
-    private void OnRotated()
+    private void OnRotated(Vector2 screenMousePosition)
     {
-        float angle = Vector2.SignedAngle(Vector2.right, Model.Direction);
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(screenMousePosition);
+        float angle = Vector2.SignedAngle(Vector2.right, worldMousePosition - transform.position);
         transform.eulerAngles = new Vector3(0f, 0f, angle);
+        _direction = new Vector2(Mathf.Cos(transform.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.eulerAngles.z * Mathf.Deg2Rad));
 
-        AnimationController.OnRotated(Model.Direction);
+        AnimationController.OnRotated(_direction);
     }
 }
