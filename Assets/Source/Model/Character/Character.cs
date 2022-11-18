@@ -4,6 +4,7 @@ using UnityEngine;
 public class Character : IUpdateble, IStartable, IEnable
 {
     public event Action Died;
+    public event Action Destroyed;
 
     public Movement Movement => _movement;
     public Stats Stats => _stats;
@@ -75,6 +76,16 @@ public class Character : IUpdateble, IStartable, IEnable
     public void TakeExp(int expPoints)
     {
         _stats.TakeExp(expPoints);
+    }
+
+    public void Kill()
+    {
+        _health.Kill();
+    }
+
+    public void Destroy()
+    {
+        Destroyed?.Invoke();
     }
 
     private void OnDied()

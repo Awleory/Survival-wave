@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SimpleEnemy : Enemy
 {
-    private bool _minDistanceToTargetReached => Vector2.Distance(Target.Movement.Position, Movement.Position) <= _minDistanceToTarget;
     private TimerActions _timerActions;
     private int _actionAttackID;
     private bool _attackIsReady = false;
 
     private const float _minDistanceToTarget = 0.4f;
+    private const float _maxDistanceToTarget = 23f;
 
     public SimpleEnemy(Player target) : base(target) 
     {
@@ -33,7 +33,9 @@ public class SimpleEnemy : Enemy
         base.Update(deltaTime);
         _timerActions.Update(deltaTime);
 
-        if (_minDistanceToTargetReached)
+        float distanceToTarget = Vector2.Distance(Target.Movement.Position, Movement.Position);
+
+        if (distanceToTarget <= _minDistanceToTarget)
         {
             Movement.Move(Vector2.zero);
             if (_attackIsReady)
@@ -41,6 +43,10 @@ public class SimpleEnemy : Enemy
                 Target.ApplyDamage(Damage, DamageType.Physical);
                 _attackIsReady = false;
             }
+        }
+        else if (distanceToTarget >= _maxDistanceToTarget)
+        {
+            Destroy();
         }
         else
         {

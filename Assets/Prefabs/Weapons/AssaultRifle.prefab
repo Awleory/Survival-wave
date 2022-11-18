@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f40afada08531843949eecca26d0ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootingSpeed: 10
+  _shootingSpeed: 5
   _bulletPresenter: {fileID: 163276664195860859, guid: c9881749755556340ad9e5ea0ac8151e, type: 3}
   _gunPoint: {fileID: 6224824164577881604}
 --- !u!95 &7798982930956597715

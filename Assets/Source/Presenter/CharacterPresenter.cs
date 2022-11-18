@@ -23,6 +23,7 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
         Model.Movement.Moved += OnMoved;
         Model.Movement.StoppedMove += OnStoppedMove;
         Model.Died += OnDied;
+        Model.Destroyed += Destroy;
     }
 
     protected override void OnDisable()
@@ -32,6 +33,7 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
         Model.Movement.Moved += OnMoved;
         Model.Movement.StoppedMove -= OnStoppedMove;
         Model.Died -= OnDied;
+        Model.Destroyed -= Destroy;
     }
 
     private void OnMoved()

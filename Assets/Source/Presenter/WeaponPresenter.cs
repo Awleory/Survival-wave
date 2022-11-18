@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class WeaponPresenter : Presenter<Weapon>
 {
@@ -33,8 +35,9 @@ public class WeaponPresenter : Presenter<Weapon>
 
     private void OnShot()
     {
-        BulletPresenter bulletPresenter = Instantiate(_bulletPresenter, _gunPoint.position, Quaternion.identity);
-        bulletPresenter.Initialize(_direction); Debugger.UpdateText("_direction", _direction);
+        Quaternion rotation = _bulletPresenter.transform.rotation * Quaternion.Euler(transform.eulerAngles);
+        BulletPresenter bulletPresenter = Instantiate(_bulletPresenter, _gunPoint.position, rotation);
+        bulletPresenter.Initialize(_direction); 
         bulletPresenter.EndInitialize();
     }
 

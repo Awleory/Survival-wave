@@ -10,22 +10,21 @@ public class PlayerController : IUpdateble
 
     private PlayerInput _input;
 
+    private const float valueWhenShooting = 1;
+
     public PlayerController()
     {
         _input = new PlayerInput();
         _input.Enable();
-        
-        _input.Player.Shoot.performed += context => OnShoot();
     }
 
     public void Update(float deltatime)
     {
         Velocity = _input.Player.Move.ReadValue<Vector2>();
-        ScreenMousePosition = _input.Player.MousePosition.ReadValue<Vector2>();
-    }
 
-    private void OnShoot()
-    {
-        Shot?.Invoke();
+        if (_input.Player.Shoot.ReadValue<float>() == valueWhenShooting)
+            Shot?.Invoke();
+
+        ScreenMousePosition = _input.Player.MousePosition.ReadValue<Vector2>();
     }
 }
