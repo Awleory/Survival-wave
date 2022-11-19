@@ -42,6 +42,7 @@ public class Character : IUpdateble, IStartable, IEnable
     public virtual void Start()
     {
         _stats.Start();
+        _health.Start();
     }
 
     public virtual void OnEnable()

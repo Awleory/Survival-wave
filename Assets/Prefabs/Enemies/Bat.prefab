@@ -306,11 +306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc890082875440c4b8e8340dc7944ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hideWhenFull: 0
-  _showText: 1
+  _hideWhenFull: 1
+  _showText: 0
   _fillSpeedRate: 1
   _textValue: {fileID: 7058354706493109857}
-  _fillArea: {fileID: 7058354705483723364}
+  _foreground: {fileID: 7058354705483723364}
+  _background: {fileID: 7058354704963008062}
 --- !u!1 &7058354706159284108
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +500,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.009302735, y: -0.020931281}

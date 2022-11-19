@@ -1,6 +1,6 @@
 using System;
 
-public class Health
+public class Health : IStartable
 {
     public event Action Died;
     public event Action<float> ValueChanged;
@@ -16,6 +16,11 @@ public class Health
         _baseMaxValue = baseMaxValue;
         Value = _baseMaxValue;
         MaxValue = _baseMaxValue;
+    }
+
+    public void Start()
+    {
+        ValueChanged?.Invoke(0);
     }
 
     public void ApplyDamage(float damage, DamageType type)

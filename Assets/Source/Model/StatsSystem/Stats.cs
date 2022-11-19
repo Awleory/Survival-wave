@@ -55,6 +55,7 @@ public class Stats : IStartable
 
     public void UpLevel()
     {
+        CurrentExp = 0;
         Level++;
         ExpForNextLevel = (int)(ExpForNextLevel * _expForNextLevelRate);
 

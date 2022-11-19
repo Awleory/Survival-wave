@@ -9,6 +9,7 @@ public class PlayerController : IUpdateble
     public Vector2 Velocity { get; private set; }
 
     private PlayerInput _input;
+    private bool _shootButtonPressed = false;
 
     private const float valueWhenShooting = 1;
 
@@ -22,7 +23,9 @@ public class PlayerController : IUpdateble
     {
         Velocity = _input.Player.Move.ReadValue<Vector2>();
 
-        if (_input.Player.Shoot.ReadValue<float>() == valueWhenShooting)
+        _shootButtonPressed = _input.Player.Shoot.ReadValue<float>() == valueWhenShooting;
+       
+        if (_shootButtonPressed)
             Shot?.Invoke();
 
         ScreenMousePosition = _input.Player.MousePosition.ReadValue<Vector2>();

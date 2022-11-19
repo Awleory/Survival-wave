@@ -5,6 +5,7 @@ public class PlayerPresenter : CharacterPresenter<Player>
     [SerializeField] private PlayerInfoUI _playerInfoUI;
     [SerializeField] private WeaponPresenter _weaponTemplate;
     [SerializeField] private Transform _weaponPoint;
+    [SerializeField] private FillBarUI _experienceBarUI;
 
     public override void Initialize(Player model)
     {
@@ -15,6 +16,13 @@ public class PlayerPresenter : CharacterPresenter<Player>
         weaponPresenter.EndInitialize();
 
         _playerInfoUI?.Initialize(model.Stats, model.AttributeBonuses);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        _experienceBarUI.UpdateValue(Model.Stats.CurrentExp, Model.Stats.ExpForNextLevel);
     }
 
     protected override void OnDied()
