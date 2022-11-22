@@ -1,12 +1,13 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+[RequireComponent(typeof(AnimationController))]
 public class WeaponPresenter : Presenter<Weapon>
 {
     [SerializeField] private float _shootingSpeed;
     [SerializeField] private BulletPresenter _bulletPresenter;
     [SerializeField] private Transform _gunPoint;
+
+    public AnimationController AnimationController { get; private set; }
 
     private Vector2 _direction;
 
@@ -15,6 +16,11 @@ public class WeaponPresenter : Presenter<Weapon>
         base.Initialize(weapon);
 
         Model.Initialize(_shootingSpeed, transform.position);
+    }
+
+    private void Awake()
+    {
+        AnimationController = GetComponent<AnimationController>();
     }
 
     protected override void OnEnable()

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyTag))]
@@ -7,9 +8,9 @@ public class EnemyPresenter : CharacterPresenter<SimpleEnemy>
     public Rewards Rewards { get; private set; }
     public EnemyTag EnemyTag { get; private set; }
 
-    public override void Initialize(SimpleEnemy model)
+    public override void Initialize(SimpleEnemy model, int level)
     {
-        base.Initialize(model);
+        base.Initialize(model, level);
 
         EnemyTag.Initialize(model);
     }
@@ -22,11 +23,29 @@ public class EnemyPresenter : CharacterPresenter<SimpleEnemy>
         EnemyTag = GetComponent<EnemyTag>();
     }
 
-    protected override void OnDied()
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        Model.Attacked += OnAttacked;
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        Model.Attacked -= OnAttacked;
+    }
+
+    protected override void OnDying()
     {
         int rewardExp = (int)(Rewards.BaseExperience + Rewards.BaseExperience * Rewards.ExperienceRatePerLevel * Model.Stats.Level);
         Model.Target.TakeExp(rewardExp);
 
-        base.OnDied();
+        base.OnDying();
+    }
+
+    private void OnAttacked()
+    {
+        AnimationController.OnAttacked();
     }
 }

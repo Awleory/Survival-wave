@@ -161,9 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 246d192f9d6683341b7c3e84b5ef5a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
+  _damage: 50
+  _isPureDamage: 1
   _speed: 20
-  _damageType: 2
   _maxTargetHits: 3
 --- !u!95 &339097160779017421
 Animator:

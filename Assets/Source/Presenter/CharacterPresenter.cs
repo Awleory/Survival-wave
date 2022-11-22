@@ -1,27 +1,37 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterStatsConfig))]
 [RequireComponent (typeof(BoxCollider2D))]
+[RequireComponent(typeof(AnimationController))]
 public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Character
 {
     [SerializeField] private FillBarUI _healthBarUI;
 
-    private Rigidbody2D _rigidBody2D;
+    public AnimationController AnimationController { get; private set; }
 
-    private const string _runParameter = "Run";
+    private CharacterStatsConfig _statsConfig;
 
-    public override void Initialize(TModel model)
+    public virtual void Initialize(TModel model, int level = 0)
     {
         base.Initialize(model);
-        Model.Initialize(GetComponent<CharacterStatsConfig>(), transform.position);
+
+        _statsConfig = GetComponent<CharacterStatsConfig>();
+
+        Model.Initialize(_statsConfig, level, transform.position);
     }
 
-    protected override void Awake()
+    public Range GetMinMaxLevel()
     {
-        base.Awake();
+        if (_statsConfig == null)
+            _statsConfig = GetComponent<CharacterStatsConfig>();
 
-        _rigidBody2D = GetComponent<Rigidbody2D>();
+        return new Range(_statsConfig.MinLevel, _statsConfig.MaxLevel);
+    }
+
+    protected virtual void Awake()
+    {
+        AnimationController = GetComponent<AnimationController>();
     }
 
     protected override void OnEnable()
@@ -30,32 +40,38 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
 
         Model.Movement.Moved += OnMoved;
         Model.Movement.StoppedMove += OnStoppedMove;
-        Model.Died += OnDied;
+        Model.Died += OnDying;
         Model.Destroyed += Destroy;
         Model.Health.ValueChanged += OnHealthChanged;
+        Model.GotDamage += OnGotDamage;
+
+        AnimationController.DeathAnimEnded += OnDied;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        Model.Movement.Moved += OnMoved;
+        Model.Movement.Moved -= OnMoved;
         Model.Movement.StoppedMove -= OnStoppedMove;
-        Model.Died -= OnDied;
+        Model.Died -= OnDying;
         Model.Destroyed -= Destroy;
         Model.Health.ValueChanged -= OnHealthChanged;
+        Model.GotDamage -= OnGotDamage;
+
+        AnimationController.DeathAnimEnded -= OnDied;
     }
 
     private void OnMoved()
     {
         transform.position = Model.Movement.Position; 
 
-        AnimationController.OnMoved(_runParameter, Model.Movement.Direction);
+        AnimationController.OnMoved(Model.Movement.Direction);
     }
 
     private void OnStoppedMove()
     {
-        AnimationController.OnStoppedMove(_runParameter);
+        AnimationController.OnStoppedMove();
     }
 
     private void OnHealthChanged(float delta)
@@ -63,8 +79,18 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
         _healthBarUI.UpdateValue(Model.Health.Value, Model.Health.MaxValue);
     }
 
-    protected virtual void OnDied()
+    private void OnGotDamage()
     {
-        Destroy(gameObject);
+        AnimationController.OnGotHit();
+    }
+
+    protected virtual void OnDying()
+    {
+        AnimationController.OnDying();
+    }
+
+    protected virtual void OnDied() 
+    {
+        Destroy();
     }
 }

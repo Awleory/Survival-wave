@@ -1,29 +1,45 @@
 using System;
+using System.Collections.Generic;
 
 public class Stats : IStartable
 {
     public event Action LevelUp;
     public event Action Updated;
 
-    public StatAttribute Vitality { get; private set; } = new StatAttribute();
-    public StatAttribute Strength { get; private set; } = new StatAttribute();
-    public StatAttribute Dexterity { get; private set; } = new StatAttribute();
-    public StatAttribute Intellect { get; private set; } = new StatAttribute();
+    public Attribute Health { get; private set; } = new Attribute(nameof(Health));
+    public Attribute Attack { get; private set; } = new Attribute(nameof(Attack));
+    public Attribute Defence { get; private set; } = new Attribute(nameof(Defence));
+    public Attribute MoveSpeed { get; private set; } = new Attribute(nameof(MoveSpeed));
+    public Attribute ExpRequired { get; private set; } = new Attribute(nameof(ExpRequired));
+    public Attribute AttackSpeed { get; private set; } = new Attribute(nameof(AttackSpeed));
 
-    private const float _expForNextLevelRate = 1.2f;
+    public float DamageResist => GetResist();
+    public float AttacksPerSecond => CalculateHyperboleFunc(AttackSpeed.Value, 10, 0.05f, 5);
 
     public int Level { get; private set; } = 1;
+    public int MaxLevel { get; private set; }
+    public int MinLevel { get; private set; }
     public int CurrentExp { get; private set; }
-    public int ExpForNextLevel { get; private set; } = 100;
+
+    private List<Attribute> _statAttributes;
+
+    public Stats()
+    {
+        _statAttributes = new List<Attribute>{Health, Attack, Defence, MoveSpeed, AttackSpeed, ExpRequired};
+    }
 
     public void Initialize(CharacterStatsConfig statsConfig, int level)
     {
-        Vitality.Initialize(statsConfig.BaseVitality, statsConfig.DeltaVitality, level);
-        Strength.Initialize(statsConfig.BaseStrength, statsConfig.DeltaStrength, level);
-        Intellect.Initialize(statsConfig.BaseIntellect, statsConfig.DeltaIntellect, level);
-        Dexterity.Initialize(statsConfig.BaseDexterity, statsConfig.DeltaDexterity, level);
+        Level = Math.Max(Config.MinCharacterLevel, level);
+        MinLevel = statsConfig.MinLevel;
+        MaxLevel = statsConfig.MaxLevel;
 
-        Level = level;
+        Health.Initialize(statsConfig.BaseHealth, statsConfig.MaxHealth, Level, statsConfig.MinLevel, statsConfig.MaxLevel);
+        Attack.Initialize(statsConfig.BaseAttack, statsConfig.MaxAttack, Level, statsConfig.MinLevel, statsConfig.MaxLevel);
+        Defence.Initialize(statsConfig.BaseDefence, statsConfig.MaxDefence, Level, statsConfig.MinLevel, statsConfig.MaxLevel);
+        MoveSpeed.Initialize(statsConfig.BaseRunSpeed, statsConfig.MaxRunSpeed, Level, statsConfig.MinLevel, statsConfig.MaxLevel);
+        AttackSpeed.Initialize(statsConfig.BaseAttackSpeed, statsConfig.MaxAttackSpeed, Level, statsConfig.MinLevel, statsConfig.MaxLevel);
+        ExpRequired.Initialize(Config.BaseExpNeed, Config.MaxExpNeed, Level, statsConfig.MinLevel, statsConfig.MaxLevel);
     }
 
     public void Start()
@@ -33,12 +49,17 @@ public class Stats : IStartable
 
     public void TakeExp(int expPoints)
     {
+        if (Level >= MaxLevel)
+            return;
+
         if (expPoints <= 0)
             throw new ArgumentOutOfRangeException(nameof(expPoints));
 
         while (expPoints > 0)
         {
-            int needToLevelUp = ExpForNextLevel - CurrentExp;
+            int needToLevelUp = (int)ExpRequired.Value - CurrentExp;
+            if (needToLevelUp == 0)
+                return;
 
             if (expPoints >= needToLevelUp)
             {
@@ -55,20 +76,47 @@ public class Stats : IStartable
 
     public void UpLevel()
     {
+        if (Level >= MaxLevel)
+            return;
+
         CurrentExp = 0;
         Level++;
-        ExpForNextLevel = (int)(ExpForNextLevel * _expForNextLevelRate);
 
         Update();
+
+        if (Level == MaxLevel)
+            CurrentExp = (int)ExpRequired.Value;
+
         LevelUp?.Invoke();
+    }
+
+    public string GetStatsInfo()
+    {
+        string statsInfo = "";
+        foreach (var attribute in _statAttributes)
+        {
+            statsInfo += attribute.Label + " - " + attribute.Value + "\n";
+        }
+        return statsInfo;
+    }
+
+    private float GetResist()
+    {
+        return CalculateHyperboleFunc(Defence.Value, 10, 0.06f, 1) - 1;
+    }
+
+    private float CalculateHyperboleFunc(float x, float growthRate, float xRate, float limit)
+    {
+        return limit * (xRate * x / (growthRate + xRate * x)) + 1;
     }
 
     private void Update()
     {
-        Vitality.Update(Level);
-        Strength.Update(Level);
-        Intellect.Update(Level);
-
+        foreach (var attribute in _statAttributes)
+        {
+            attribute.Update(Level);
+        }
+        
         Updated?.Invoke();
     }
 }

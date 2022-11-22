@@ -8,8 +8,8 @@ public class Bullet : IUpdateble
 
     public float Damage { get; private set; }
     public Movement Movement { get; private set; }
-    public DamageType DamageType { get; private set; }
 
+    private bool _isPureDamage; 
     private float _maxTargetHits;
     private float _targetHits = 0;
     private Vector2 _direction;
@@ -22,10 +22,10 @@ public class Bullet : IUpdateble
         Damage = bulletConfig.Damage;
         _direction = direction;
         _maxTargetHits = bulletConfig.MaxTargetHits;
-        DamageType = bulletConfig.DamageType;
+        _isPureDamage = bulletConfig.IsPureDamage;
 
         Movement = new Movement();
-        Movement.Initialize(bulletConfig.Speed, startPosition);
+        Movement.Initialize(startPosition, bulletConfig.Speed);
         Movement.Move(_direction);
 
         Movement.Moved += OnMoved;
@@ -43,13 +43,16 @@ public class Bullet : IUpdateble
 
     public void ProcessCollision(Character character)
     {
+        if (character.IsAlive == false)
+            return;
+
         if (_targetHits >= _maxTargetHits)
         {
             Destroy();
             return;
         }
 
-        character.ApplyDamage(Damage, DamageType);
+        character.ApplyDamage(Damage, _isPureDamage);
         _targetHits++;
     }
 

@@ -1,10 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AnimationController))]
 public abstract class Presenter<TModel> : MonoBehaviour where TModel : class
 {
     public TModel Model { get; private set; }
-    public AnimationController AnimationController { get; private set; }
 
     private IUpdateble _updateble = null;
     private IEnable _enable = null;
@@ -24,7 +22,7 @@ public abstract class Presenter<TModel> : MonoBehaviour where TModel : class
             _startable = (IStartable)Model;
     }
 
-    public void EndInitialize()
+    public virtual void EndInitialize()
     {
         enabled = true;
     }
@@ -34,9 +32,9 @@ public abstract class Presenter<TModel> : MonoBehaviour where TModel : class
         Destroy(gameObject);
     }
 
-    protected virtual void Awake()
+    public void Destroy(Character character)
     {
-        AnimationController = GetComponent<AnimationController>();
+        Destroy();
     }
 
     protected virtual void Start()

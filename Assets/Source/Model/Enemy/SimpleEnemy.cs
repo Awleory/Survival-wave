@@ -1,13 +1,17 @@
+using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SimpleEnemy : Enemy
 {
+    public event Action Attacked;
+
     private TimerActions _timerActions;
     private int _actionAttackID;
     private bool _attackIsReady = false;
 
     private const float _minDistanceToTarget = 0.4f;
-    private const float _maxDistanceToTarget = 23f;
+    private const bool _dealPureDamage = false;
 
     public SimpleEnemy(Player target) : base(target) 
     {
@@ -17,41 +21,40 @@ public class SimpleEnemy : Enemy
     public override void OnEnable()
     {
         base.OnEnable();
-        _timerActions.GotReady += OnTimerGotReady;
 
+        _timerActions.GotReady += OnTimerGotReady;
         _actionAttackID = _timerActions.Create(AttacksPerSecond);
+
+        Stats.AttackSpeed.ValueChanged += OnAttackSpeedChanged;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
+
         _timerActions.GotReady -= OnTimerGotReady;
+
+        Stats.AttackSpeed.ValueChanged -= OnAttackSpeedChanged;
     }
 
     public override void Update(float deltaTime)
     {
         base.Update(deltaTime);
+
         _timerActions.Update(deltaTime);
 
-        float distanceToTarget = Vector2.Distance(Target.Movement.Position, Movement.Position);
-
-        if (distanceToTarget <= _minDistanceToTarget)
+        if (IsAlive)
         {
-            Movement.Move(Vector2.zero);
-            if (_attackIsReady)
+            if (DistanceToTarget <= _minDistanceToTarget)
             {
-                Target.ApplyDamage(Damage, DamageType.Physical);
-                _attackIsReady = false;
+                Movement.Move(Vector2.zero);
+                TryAttack(Target);
+            }
+            else
+            {
+                Movement.Move((Target.Movement.Position - Movement.Position).normalized);
             }
         }
-        else if (distanceToTarget >= _maxDistanceToTarget)
-        {
-            Destroy();
-        }
-        else
-        {
-            Movement.Move((Target.Movement.Position - Movement.Position).normalized);
-        }   
     }
 
     private void OnTimerGotReady(int id)
@@ -60,10 +63,18 @@ public class SimpleEnemy : Enemy
             _attackIsReady = true;
     }
 
-    protected override void OnAttributeBonusesUpdated()
+    private void TryAttack(Character target)
     {
-        base.OnAttributeBonusesUpdated();
+        if (_attackIsReady)
+        {
+            target.ApplyDamage(Damage, _dealPureDamage);
+            Attacked?.Invoke();
+            _attackIsReady = false;
+        }
+    }
 
+    private void OnAttackSpeedChanged()
+    {
         _timerActions.SetCooldown(_actionAttackID, AttacksPerSecond);
     }
 }

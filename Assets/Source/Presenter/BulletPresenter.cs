@@ -12,10 +12,8 @@ public class BulletPresenter : Presenter<Bullet>
         base.Initialize(GetBullet(direction));
     }
 
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         _bulletConfig = GetComponent<BulletConfig>();
     }
 

@@ -31,37 +31,6 @@ Transform:
   m_Father: {fileID: 7192116959717650538}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7192116958202181951
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7192116958202181944}
-  m_Layer: 0
-  m_Name: Points
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7192116958202181944
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7192116958202181951}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.63, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7192116959717650538}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7192116959717650536
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7192116959717650538}
-  - component: {fileID: 7192116959717650537}
+  - component: {fileID: 8431712401905167549}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -91,12 +60,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7192116958202181944}
   - {fileID: 5269026690456602271}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7192116959717650537
+--- !u!114 &8431712401905167549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,13 +73,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7192116959717650536}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab9433af4d2b6c49848a9d38dc88958, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a8b08a1d6522c94bbde4ff60a688b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _factory: {fileID: 3915189425329845490, guid: 5ae41e0c1f37ce24ea02cac9768d2e06, type: 3}
-  _spawnedEnemies: {fileID: 5269026690456602271}
-  _points: {fileID: 7192116958202181944}
-  _maxEnemies: 50
-  _delaySpawn: 0.2
+  _spawnedEnemiesParent: {fileID: 5269026690456602271}
+  _maxEnemies: 200
+  _delaySpawn: 0.5
   _spawnLineRadius: 10
   _spawnPointsCount: 20
+  _enable: 1

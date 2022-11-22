@@ -7,17 +7,17 @@ public class Movement : IMovable, IUpdateble
     public event Action StoppedMove;
 
     public Vector2 Direction => _directionVelocity;
-    public float Speed => Math.Min(_baseSpeed * _speedRate, Config.MaxRunSpeed);
+    public float Speed => _speed;
     public Vector2 Position { get; private set; }
 
-    private float _baseSpeed;
-    private float _speedRate = 1f;
+    private float _speed;
     private Vector2 _directionVelocity;
+    private bool _canMove = true;
 
-    public void Initialize(float baseSpeed, Vector2 startPosition)
+    public void Initialize(Vector2 startPosition, float speed = 1)
     {
-        _baseSpeed = baseSpeed;
         Position = startPosition;
+        _speed = speed;
     }
 
     public void Move(Vector2 direction)
@@ -36,11 +36,27 @@ public class Movement : IMovable, IUpdateble
 
     public void Update(float deltaTime)
     {
-        Position = Vector2.MoveTowards(Position, Position + _directionVelocity, Speed * deltaTime);
+        if (_canMove)
+            Position = Vector2.MoveTowards(Position, Position + _directionVelocity, _speed * deltaTime);
     }
 
-    public void OnBonusSpeedChanged(float speedRate)
+    public void Freeze()
     {
-        _speedRate = speedRate;
+        _canMove = false;
+    }
+
+    public void UnFreeze()
+    {
+        _canMove = true;
+    }
+
+    public void SetPosition(Vector2 newPosition)
+    {
+        Position = newPosition;
+    }
+
+    public void OnSpeedChanged(float speed)
+    {
+        _speed = Math.Min(Config.MaxRunSpeed, speed);
     }
 }

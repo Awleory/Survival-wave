@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1844119201091138417}
   - component: {fileID: 3915189425329845490}
   m_Layer: 0
-  m_Name: PresentersFactory
+  m_Name: EnemiesFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3915189425329845490
 MonoBehaviour:
@@ -44,4 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bde7d51e0dad4a498bcea3f658435c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bat: {fileID: 7058354706159284106, guid: 9a6d2de9378267f44b59064482a794a6, type: 3}
+  _enemies:
+  - {fileID: 7058354706159284106, guid: 9a6d2de9378267f44b59064482a794a6, type: 3}
+  - {fileID: 7058354706159284106, guid: 7c685eff366fb65439346f14ff62eeda, type: 3}
+  - {fileID: 7058354706159284106, guid: 732d092d3060a9e4cad27abcfbedf995, type: 3}
+  - {fileID: 7058354706159284106, guid: 4b47e49c69b0173469b9671b70a41247, type: 3}
+  - {fileID: 7058354706159284106, guid: 3c474d988239ba14fa8df17211431579, type: 3}
+  - {fileID: 7058354706159284106, guid: 83d2f3ba79ca6324590c93923fede468, type: 3}
+  - {fileID: 7058354706159284106, guid: 06117f9846abb2f47a76fe3ab4e31a8e, type: 3}
+  - {fileID: 7058354706159284106, guid: 16166dc37d73e8a40abf8c18bb558f22, type: 3}

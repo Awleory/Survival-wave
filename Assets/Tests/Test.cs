@@ -8,7 +8,7 @@ public class Test : MonoBehaviour
 
     public void DealDamage()
     {
-        _playerPresenter.Model.ApplyDamage(_damage, DamageType.Pure);
+        _playerPresenter.Model.ApplyDamage(_damage, true);
     }
 
     public void Heal()

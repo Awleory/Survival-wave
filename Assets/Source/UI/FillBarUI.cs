@@ -6,7 +6,8 @@ using TMPro;
 
 public class FillBarUI : MonoBehaviour
 {
-    [SerializeField] private bool _hideWhenFull = false;
+    [SerializeField] private bool _hideWhenFull = true;
+    [SerializeField] private bool _hideWhenEmpty = true;
     [SerializeField] private bool _showText = true;
     [SerializeField] private float _fillSpeedRate = 1; 
     [SerializeField] private TextMeshProUGUI _textValue;
@@ -15,10 +16,12 @@ public class FillBarUI : MonoBehaviour
 
     private float _value;
     private float _maxValue;
-    private float _normalizedValue => (float)Math.Round((double)(_value / _maxValue), 2);
+    private float _normalizedValue => (float)Math.Round((double)(_value / _maxValue), _normalizedValueDecimals);
 
     private string _rawTextValue = "{0}/{1}";
     private Coroutine _healthChangeCoroutine;
+
+    private const int _normalizedValueDecimals = 2;
 
     public void UpdateValue(float value, float maxValue)
     {
@@ -65,13 +68,28 @@ public class FillBarUI : MonoBehaviour
     private void UpdateText()
     {
         if (_showText)
-            _textValue.text = string.Format(_rawTextValue, (int)_value, _maxValue);
+            _textValue.text = string.Format(_rawTextValue, (int)_value, (int)_maxValue);
         else if (_textValue.gameObject.activeInHierarchy)
             _textValue.gameObject.SetActive(false);
 
-        if (_hideWhenFull)
-        {
-            _background.gameObject.SetActive(_value != _maxValue);
-        }
+        Show();
+
+        if (_hideWhenFull && _value == _maxValue)
+            Hide();
+
+        if (_hideWhenEmpty && _value == 0)
+            Hide();
+    }
+
+    public void Hide()
+    {
+        if (_background.gameObject.activeSelf)
+            _background.gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        if (_background.gameObject.activeSelf == false)
+            _background.gameObject.SetActive(true);
     }
 }

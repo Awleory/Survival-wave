@@ -1,42 +1,41 @@
 using System;
 using UnityEngine;
 
-public class Character : IUpdateble, IStartable, IEnable
+public abstract class Character : IUpdateble, IStartable, IEnable
 {
     public event Action Died;
-    public event Action Destroyed;
+    public event Action GotDamage;
+    public event Action<Character> Destroyed;
 
     public Movement Movement => _movement;
     public Stats Stats => _stats;
-    public AttributeBonuses AttributeBonuses => _attributeBonuses;
     public Health Health => _health;
-    public float SpeedAttack => _baseAttackSpeed * _attributeBonuses.AttackSpeed;
-    public float AttacksPerSecond => 1 / SpeedAttack;
-    public float Damage => _attributeBonuses.Damage + _baseDamage;
+    public float AttacksPerSecond => _stats.AttacksPerSecond;
+    public float Damage => _stats.Attack.Value;
+    public bool IsAlive => _health.IsAlive;
 
     private Movement _movement;
-    private CharacterHealth _health;
+    private Health _health;
     private Stats _stats;
-    private AttributeBonuses _attributeBonuses;
-    private float _baseDamage;
-    private float _baseAttackSpeed;
 
     public Character()
     {
         _movement = new Movement();
-        _health = new CharacterHealth();
+        _health = new Health();
         _stats = new Stats();
-        _attributeBonuses = new AttributeBonuses(_stats);
     }
 
-    public void Initialize(CharacterStatsConfig statsConfig, Vector2 startPosition)
+    ~Character()
     {
-        _stats.Initialize(statsConfig, statsConfig.BaseLevel);
+        Destroyed?.Invoke(this);
+    }
+
+    public void Initialize(CharacterStatsConfig statsConfig, int level, Vector2 startPosition)
+    {
+        int startLevel = level == 0 ? statsConfig.BaseLevel : level;
+        _stats.Initialize(statsConfig, startLevel);
         _health.Initialize(statsConfig.BaseHealth);
-        _health.Initialize(_attributeBonuses);
-        _movement.Initialize(statsConfig.BaseSpeed, startPosition);
-        _baseDamage = statsConfig.BaseDamage;
-        _baseAttackSpeed = statsConfig.BaseAttackSpeed;
+        _movement.Initialize(startPosition);
     }
 
     public virtual void Start()
@@ -48,15 +47,15 @@ public class Character : IUpdateble, IStartable, IEnable
     public virtual void OnEnable()
     {
         _health.Died += OnDied;
-        _health.ValueChanged += OnHealthChanged;
-        _attributeBonuses.Changed += OnAttributeBonusesUpdated;
+        _stats.Health.ValueChanged += OnHealthAttributeChanged;
+        _stats.MoveSpeed.ValueChanged += OnRunSpeedAttributeChanged;
     }
 
     public virtual void OnDisable()
     {
         _health.Died -= OnDied;
-        _health.ValueChanged -= OnHealthChanged;
-        _attributeBonuses.Changed -= OnAttributeBonusesUpdated;
+        _stats.Health.ValueChanged += OnHealthAttributeChanged;
+        _stats.MoveSpeed.ValueChanged -= OnRunSpeedAttributeChanged;
     }
 
     public virtual void Update(float deltaTime) 
@@ -64,9 +63,10 @@ public class Character : IUpdateble, IStartable, IEnable
         _movement.Update(deltaTime);
     }
 
-    public void ApplyDamage(float damage, DamageType type)
+    public void ApplyDamage(float damage, bool isPure)
     {
-        _health.ApplyDamage(damage, type);
+        _health.ApplyDamage(damage, Stats.DamageResist, isPure);
+        GotDamage?.Invoke();
     }
 
     public void ApplyHeal(float healPoints, bool isPure = false)
@@ -84,22 +84,23 @@ public class Character : IUpdateble, IStartable, IEnable
         _health.Kill();
     }
 
+    public void Respawn(Vector2 spawnPoint)
+    {
+        Movement.SetPosition(spawnPoint);
+    }
+
     public void Destroy()
     {
-        Destroyed?.Invoke();
+        Destroyed?.Invoke(this);
     }
 
     private void OnDied()
     {
+        _movement.Freeze();
         Died?.Invoke();
     }
 
-    private void OnHealthChanged(float difference)
-    {
-    }
+    private void OnHealthAttributeChanged() => _health.ResizeHealth(_stats.Health.Value);
 
-    protected virtual void OnAttributeBonusesUpdated() 
-    {
-        _movement.OnBonusSpeedChanged(_attributeBonuses.Speed);
-    }
+    private void OnRunSpeedAttributeChanged() => _movement.OnSpeedChanged(_stats.MoveSpeed.Value);
 }

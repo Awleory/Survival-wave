@@ -9,13 +9,10 @@ public class Health : IStartable
     public float MaxValue { get; private set; }
     public bool IsAlive => Value > 0;
 
-    private float _baseMaxValue;
-
-    public void Initialize(float baseMaxValue)
+    public void Initialize(float baseValue)
     {
-        _baseMaxValue = baseMaxValue;
-        Value = _baseMaxValue;
-        MaxValue = _baseMaxValue;
+        Value = baseValue;
+        MaxValue = baseValue;
     }
 
     public void Start()
@@ -23,12 +20,12 @@ public class Health : IStartable
         ValueChanged?.Invoke(0);
     }
 
-    public void ApplyDamage(float damage, DamageType type)
+    public void ApplyDamage(float damage, float damageResist, bool isPure)
     {
         if (damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage));
 
-        damage = CalculateDamage(damage, type);
+        damage = CalculateDamage(damage, damageResist, isPure);
 
         Value = Math.Max(Value - damage, 0);
 
@@ -66,22 +63,10 @@ public class Health : IStartable
         ValueChanged?.Invoke(tempValue);
     }
 
-    protected virtual float CalculateDamage(float damage, DamageType type)
+    public void ResizeHealth(float newMaxValue)
     {
-        return damage;
-    }
-
-    protected virtual float CalculateHeal(float healPoitns)
-    {
-        return healPoitns;
-    }
-
-    protected void ResizeHealth(float newBonusValue)
-    {
-        if (newBonusValue <= 0)
-            throw new ArgumentOutOfRangeException(nameof(newBonusValue));
-
-        float newMaxValue = _baseMaxValue + newBonusValue;
+        if (newMaxValue <= 0)
+            throw new ArgumentOutOfRangeException(nameof(newMaxValue));
 
         if (Value == 0 || MaxValue == 0)
         {
@@ -94,6 +79,19 @@ public class Health : IStartable
         }
 
         ValueChanged?.Invoke(Value);
+    }
+
+    private float CalculateDamage(float damage, float damageResist, bool isPure)
+    {
+        if (isPure)
+            return damage;
+        else
+            return damage - damage * damageResist;
+    }
+
+    protected float CalculateHeal(float healPoitns)
+    {
+        return healPoitns;
     }
 
     private bool TryDie()
