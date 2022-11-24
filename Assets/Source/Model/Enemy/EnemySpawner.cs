@@ -10,7 +10,8 @@ public class EnemySpawner : IEnable, IUpdateble
     private float _spawnLineRadius;
     private int _spawnPointsCount;
 
-    private const float _minRespawnDistanceToTarget = 13f;
+    private const float _minRespawnDistanceToTarget = 15f;
+    private const float _spawnSpread = 2;
 
     public void Initialize(Player target, float spawnRadius, int spawnPointsCount)
     {
@@ -42,7 +43,7 @@ public class EnemySpawner : IEnable, IUpdateble
         return newEnemy;
     }
 
-    public Vector3 GetRandomSpawnPoint()
+    public Vector3 GetRandomSpawnPoint(bool affectSpread = true)
     {
         if (_spawnPoints.Count == 0)
             return Vector3.zero;
@@ -52,7 +53,15 @@ public class EnemySpawner : IEnable, IUpdateble
         
         Vector2 targetPosition = Target.Movement.Position;
 
-        return new Vector2 (spawnPoint.x + targetPosition.x, spawnPoint.y + targetPosition.y);
+        float xSpread = 0;
+        float ySpread = 0;
+        if (affectSpread)
+        {
+            xSpread = Random.Range(-_spawnSpread, _spawnSpread);
+            ySpread = Random.Range(-_spawnSpread, _spawnSpread);
+        }
+
+        return new Vector2 (spawnPoint.x + targetPosition.x + xSpread, spawnPoint.y + targetPosition.y + ySpread);
     }
 
     public void Update(float deltaTime)
@@ -60,7 +69,7 @@ public class EnemySpawner : IEnable, IUpdateble
         foreach (Enemy enemy in _spawnedEnemies)
         {
             if (enemy.DistanceToTarget >= _minRespawnDistanceToTarget)
-                enemy.Respawn(GetRandomSpawnPoint());
+                enemy.Respawn(GetRandomSpawnPoint(), true);
         }
     }
 

@@ -18,6 +18,18 @@ public class WeaponPresenter : Presenter<Weapon>
         Model.Initialize(_shootingSpeed, transform.position);
     }
 
+    public void Hide()
+    {
+        enabled = false;
+        gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+        enabled = true;
+    }
+
     private void Awake()
     {
         AnimationController = GetComponent<AnimationController>();

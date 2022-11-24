@@ -65,6 +65,9 @@ public abstract class Character : IUpdateble, IStartable, IEnable
 
     public void ApplyDamage(float damage, bool isPure)
     {
+        if (_health.IsAlive == false)
+            return;
+
         _health.ApplyDamage(damage, Stats.DamageResist, isPure);
         GotDamage?.Invoke();
     }
@@ -84,9 +87,11 @@ public abstract class Character : IUpdateble, IStartable, IEnable
         _health.Kill();
     }
 
-    public void Respawn(Vector2 spawnPoint)
+    public void Respawn(Vector2 spawnPoint, bool restoreHealth)
     {
         Movement.SetPosition(spawnPoint);
+        if (restoreHealth)
+            _health.Restore();
     }
 
     public void Destroy()
@@ -94,7 +99,7 @@ public abstract class Character : IUpdateble, IStartable, IEnable
         Destroyed?.Invoke(this);
     }
 
-    private void OnDied()
+    protected virtual void OnDied()
     {
         _movement.Freeze();
         Died?.Invoke();

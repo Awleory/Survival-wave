@@ -3,19 +3,34 @@ using UnityEngine;
 public class PlayerPresenter : CharacterPresenter<Player>
 {
     [SerializeField] private PlayerInfoUI _playerInfoUI;
-    [SerializeField] private WeaponPresenter _weaponTemplate;
     [SerializeField] private Transform _weaponPoint;
     [SerializeField] private FillBarUI _experienceBarUI;
+    [SerializeField] private WeaponFactory _weaponFactory;
+
+    private WeaponPresenter _currentWeapon;
 
     public override void Initialize(Player model, int level)
     {
         base.Initialize(model, level);
 
-        WeaponPresenter weaponPresenter = Instantiate(_weaponTemplate, _weaponPoint);
-        weaponPresenter.Initialize(model.Weapon);
-        weaponPresenter.EndInitialize();
+        _weaponFactory.Initialize(model, _weaponPoint);
+        _currentWeapon = _weaponFactory.GetWeaponPresenter(model.CurrentWeapon);
 
         _playerInfoUI?.Initialize(model.Stats);
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        Model.ChangedWeapon += OnChangedWeapon;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        Model.ChangedWeapon -= OnChangedWeapon;
     }
 
     protected override void Update()
@@ -23,15 +38,17 @@ public class PlayerPresenter : CharacterPresenter<Player>
         base.Update();
 
         _experienceBarUI.UpdateValue(Model.Stats.CurrentExp, Model.Stats.ExpRequired.Value);
-
-        Debugger.UpdateText("Level", Model.Stats.Level);
-        Debugger.UpdateText("stats", Model.Stats.GetStatsInfo());
-        Debugger.UpdateText("DamageResist", Model.Stats.DamageResist);
-        Debugger.UpdateText("AttacksPerSecond", Model.Stats.AttacksPerSecond);
     }
 
     protected override void OnDying()
     {
-        Debug.Log("ты сдох лох");
+        base.OnDying();
+    }
+
+    private void OnChangedWeapon(Weapon weapon)
+    {
+        _currentWeapon.Hide();
+        _currentWeapon = _weaponFactory.GetWeaponPresenter(weapon);
+        _currentWeapon.Show();
     }
 }

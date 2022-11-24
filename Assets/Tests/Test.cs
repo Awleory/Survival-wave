@@ -20,4 +20,9 @@ public class Test : MonoBehaviour
     {
         _playerPresenter.Model.Stats.UpLevel();
     }
+
+    public void Restore()
+    {
+        _playerPresenter.Model.Health.Restore();
+    }
 }

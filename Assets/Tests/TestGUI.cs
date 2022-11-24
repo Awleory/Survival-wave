@@ -25,5 +25,10 @@ public class TestGUI : Editor
         {
             test.UpLevel();
         }
+
+        if (GUILayout.Button("Restore health"))
+        {
+            test.Restore();
+        }
     }
 }

@@ -38,6 +38,11 @@ public class Weapon : IUpdateble, IEnable
         _timerActions.GotReady -= OnTimerGotReady;
     }
 
+    public void OnMouseMoved(Vector2 screenMousePosition)
+    {
+        Rotated?.Invoke(screenMousePosition);
+    }
+
     public void TryShoot()
     {
         if (_readyForShoot)
@@ -45,11 +50,6 @@ public class Weapon : IUpdateble, IEnable
             Shot?.Invoke();
             _readyForShoot = false;
         }
-    }
-
-    public void OnMouseMoved(Vector2 screenMousePosition)
-    {
-        Rotated?.Invoke(screenMousePosition);
     }
 
     private void OnTimerGotReady(int actionID)
