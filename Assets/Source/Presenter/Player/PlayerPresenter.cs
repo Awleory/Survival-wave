@@ -4,6 +4,7 @@ public class PlayerPresenter : CharacterPresenter<Player>
 {
     [SerializeField] private PlayerInfoUI _playerInfoUI;
     [SerializeField] private Transform _weaponPoint;
+    [SerializeField] private Transform _bulletsContainer;
     [SerializeField] private FillBarUI _experienceBarUI;
     [SerializeField] private WeaponFactory _weaponFactory;
 
@@ -13,7 +14,7 @@ public class PlayerPresenter : CharacterPresenter<Player>
     {
         base.Initialize(model, level);
 
-        _weaponFactory.Initialize(model, _weaponPoint);
+        _weaponFactory.Initialize(model, _weaponPoint, _bulletsContainer);
         _currentWeapon = _weaponFactory.GetWeaponPresenter(model.CurrentWeapon);
 
         _playerInfoUI?.Initialize(model.Stats);

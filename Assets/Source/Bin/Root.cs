@@ -3,7 +3,6 @@ using UnityEngine;
 public class Root : MonoBehaviour
 {
     [SerializeField] private PlayerPresenter _playerPresenter;
-    [SerializeField] private EnemyPresentersFactory _enemyPresentersFactory;
     [SerializeField] private EnemySpawnerPresenter _enemySpawner;
     [SerializeField] private Ground _background;
 

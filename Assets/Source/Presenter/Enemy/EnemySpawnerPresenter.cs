@@ -1,14 +1,15 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemySpawnerPresenter : Presenter<EnemySpawner>
 {
     [SerializeField] private EnemiesFactory _factory;
-    [SerializeField] private Transform _spawnedEnemiesParent;
     [SerializeField, Min(0)] private int _maxEnemies = 1;
     [SerializeField, Min(0)] private float _delaySpawn;
     [SerializeField, Min(0)] private float _spawnLineRadius;
     [SerializeField, Min(1)] private int _spawnPointsCount;
+    [SerializeField] private Transform _container;
     [SerializeField] private bool _enable;
 
     private EnemySpawner _enemySpawner;
@@ -18,14 +19,12 @@ public class EnemySpawnerPresenter : Presenter<EnemySpawner>
 
     public void Initialize(Player target)
     {
+        _player = target;
         _enemySpawner = new EnemySpawner();
         base.Initialize(_enemySpawner);
 
-        _enemySpawner.Initialize(target, _spawnLineRadius, _spawnPointsCount);
-
-        _player = target;
-
-        _factory.Initialize(_spawnedEnemiesParent);
+        _enemySpawner.Initialize(_player, _spawnLineRadius, _spawnPointsCount);
+        _factory.Initialize(_maxEnemies, _enemySpawner, _container);
 
         _delay = new WaitForSeconds(_delaySpawn);
     }
@@ -46,17 +45,15 @@ public class EnemySpawnerPresenter : Presenter<EnemySpawner>
     private IEnumerator SpawnCoroutine(WaitForSeconds delay)
     {
         yield return delay;
-        while(_spawnedEnemiesParent.childCount < _maxEnemies)
-        {
-            SpawnRandomSimpleEnemy();
-            yield return delay;
-        }
+        Spawn();
         _spawnCoroutine = null;
     }
 
-    private void SpawnRandomSimpleEnemy()
+    private void Spawn()
     {
-        var enemyModel = _enemySpawner.CreateSimpleEnemy();
-        _factory.CreateRandomEnemy(enemyModel, _player.Stats.Level, _enemySpawner.GetRandomSpawnPoint());
+        if (_factory.TryGetRandomEnemy(_player.Stats.Level, _enemySpawner.GetRandomSpawnPoint(), out EnemyPresenter newEnemy))
+        {
+            newEnemy.gameObject.SetActive(true);
+        }
     }
 }

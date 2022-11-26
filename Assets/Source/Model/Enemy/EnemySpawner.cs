@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : IEnable, IUpdateble
+public class EnemySpawner : IEnable
 {
     public Player Target { get; private set; }
 
@@ -10,7 +10,6 @@ public class EnemySpawner : IEnable, IUpdateble
     private float _spawnLineRadius;
     private int _spawnPointsCount;
 
-    private const float _minRespawnDistanceToTarget = 15f;
     private const float _spawnSpread = 2;
 
     public void Initialize(Player target, float spawnRadius, int spawnPointsCount)
@@ -25,22 +24,17 @@ public class EnemySpawner : IEnable, IUpdateble
     public void OnEnable() 
     {
         foreach (Enemy enemy in _spawnedEnemies)
-            ProcessListeners(enemy, true);
+        {
+            UpdateListeners(enemy, true);
+        }
     }
 
     public void OnDisable()
     {
         foreach (Enemy enemy in _spawnedEnemies)
-            ProcessListeners(enemy, false);
-    }
-
-    public SimpleEnemy CreateSimpleEnemy()
-    {
-        var newEnemy = new SimpleEnemy(Target);
-        ProcessListeners(newEnemy, true);
-        _spawnedEnemies.Add(newEnemy);
-
-        return newEnemy;
+        {
+            UpdateListeners(enemy, false);
+        }
     }
 
     public Vector3 GetRandomSpawnPoint(bool affectSpread = true)
@@ -64,19 +58,19 @@ public class EnemySpawner : IEnable, IUpdateble
         return new Vector2 (spawnPoint.x + targetPosition.x + xSpread, spawnPoint.y + targetPosition.y + ySpread);
     }
 
-    public void Update(float deltaTime)
+    public SimpleEnemy CreateSimpleEnemy()
     {
-        foreach (Enemy enemy in _spawnedEnemies)
-        {
-            if (enemy.DistanceToTarget >= _minRespawnDistanceToTarget)
-                enemy.Respawn(GetRandomSpawnPoint(), true);
-        }
+        SimpleEnemy newEnemy = new SimpleEnemy(Target);
+        _spawnedEnemies.Add(newEnemy);
+        UpdateListeners(newEnemy, true);
+
+        return newEnemy;
     }
 
     private List<Vector2> CreateSpawnPoints()
     {
-        float degrees = 360;
-        float angleStep = degrees / _spawnPointsCount;
+        float circleDegrees = 360;
+        float angleStep = circleDegrees / _spawnPointsCount;
 
         List<Vector2> spawnPoints = new List<Vector2>();
 
@@ -91,21 +85,20 @@ public class EnemySpawner : IEnable, IUpdateble
         return spawnPoints;
     }
 
-    private void OnEnemyDestryed(Character character)
+    private void OnGotRespawnDistance(Enemy enemy)
     {
-        if (_spawnedEnemies.Contains((Enemy)character))
-            _spawnedEnemies.Remove((Enemy)character);
+        enemy.Respawn(GetRandomSpawnPoint());
     }
 
-    private void ProcessListeners(Enemy enemy, bool add)
+    private void UpdateListeners(Enemy enemy, bool add)
     {
         if (add)
         {
-            enemy.Destroyed += OnEnemyDestryed;
+            enemy.GotRespawnDistance += OnGotRespawnDistance;
         }
         else
         {
-            enemy.Destroyed -= OnEnemyDestryed;
+            enemy.GotRespawnDistance -= OnGotRespawnDistance;
         }
     }
 }

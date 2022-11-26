@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -5,16 +6,17 @@ using UnityEngine;
 [RequireComponent (typeof(BulletConfig))]
 public class BulletPresenter : Presenter<Bullet>
 {
-    private BulletConfig _bulletConfig;
+    public BulletConfig Config { get; private set; }
+
+    private WaitForSeconds _lifeTime;
+    private Coroutine _lifeTimeCoroutine;
 
     public void Initialize(Vector2 direction)
     {
-        base.Initialize(GetBullet(direction));
-    }
+        Config = GetComponent<BulletConfig>();
+        _lifeTime = new WaitForSeconds(Config.LifeTime);
 
-    protected virtual void Awake()
-    {
-        _bulletConfig = GetComponent<BulletConfig>();
+        base.Initialize(GetBullet(direction));
     }
 
     protected override void OnEnable()
@@ -23,6 +25,11 @@ public class BulletPresenter : Presenter<Bullet>
 
         Model.Moved += OnMoved;
         Model.Destroyed += Destroy;
+
+        if (_lifeTimeCoroutine != null)
+            StopCoroutine(_lifeTimeCoroutine);
+
+        _lifeTimeCoroutine = StartCoroutine(ProcessLiveTime());
     }
 
     protected override void OnDisable()
@@ -33,14 +40,26 @@ public class BulletPresenter : Presenter<Bullet>
         Model.Destroyed -= Destroy;
     }
 
+    public void Respawn(Vector2 position, Quaternion rotation, Vector2 direction)
+    {
+        transform.rotation = rotation;
+        Model.Reset(position, direction);
+    }
+
     private Bullet GetBullet(Vector2 direction)
     {
-        return new Bullet(_bulletConfig, direction, transform.position);
+        return new Bullet(Config, direction, transform.position);
     }
 
     private void OnMoved()
     {
         transform.position = Model.Movement.Position;
+    }
+
+    private IEnumerator ProcessLiveTime()
+    {
+        yield return _lifeTime;
+        Destroy();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

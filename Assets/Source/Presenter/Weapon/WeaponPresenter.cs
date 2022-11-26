@@ -1,32 +1,38 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(BulletsFactory))]
 public class WeaponPresenter : Presenter<Weapon>
 {
-    [SerializeField] private float _shootingSpeed;
+    [SerializeField] private float _shootsPerSecond;
     [SerializeField] private BulletPresenter _bulletPresenter;
     [SerializeField] private Transform _gunPoint;
+    
+    private BulletsFactory _bulletsFactory;
 
     public AnimationController AnimationController { get; private set; }
 
     private Vector2 _direction;
 
-    public override void Initialize(Weapon weapon)
+    public virtual void Initialize(Weapon weapon, Transform bulletsCantainer)
     {
         base.Initialize(weapon);
 
-        Model.Initialize(_shootingSpeed, transform.position);
+        _bulletsFactory = GetComponent<BulletsFactory>();
+        _bulletsFactory.Initialize(_bulletPresenter, bulletsCantainer, _shootsPerSecond);
+
+        Model.Initialize(_shootsPerSecond, transform.position);
     }
 
     public void Hide()
     {
         enabled = false;
-        gameObject.SetActive(false);
+        SpriteRenderer.enabled = false;
     }
 
     public void Show()
     {
-        gameObject.SetActive(true);
+        SpriteRenderer.enabled = true;
         enabled = true;
     }
 
@@ -53,10 +59,12 @@ public class WeaponPresenter : Presenter<Weapon>
 
     private void OnShot()
     {
-        Quaternion rotation = _bulletPresenter.transform.rotation * Quaternion.Euler(transform.eulerAngles);
-        BulletPresenter bulletPresenter = Instantiate(_bulletPresenter, _gunPoint.position, rotation);
-        bulletPresenter.Initialize(_direction); 
-        bulletPresenter.EndInitialize();
+        if(_bulletsFactory.TryGetBullet(_bulletPresenter, out BulletPresenter bulletPresenter, _direction))
+        {
+            Quaternion rotation = _bulletPresenter.transform.rotation * Quaternion.Euler(transform.eulerAngles);
+            bulletPresenter.Respawn(_gunPoint.position, rotation, _direction);
+            bulletPresenter.gameObject.SetActive(true);
+        }
     }
 
     private void OnRotated(Vector2 screenMousePosition)

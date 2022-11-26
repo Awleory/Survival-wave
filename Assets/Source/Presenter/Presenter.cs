@@ -1,8 +1,10 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public abstract class Presenter<TModel> : MonoBehaviour where TModel : class
 {
     public TModel Model { get; private set; }
+    public SpriteRenderer SpriteRenderer { get; private set; } 
 
     private IUpdateble _updateble = null;
     private IEnable _enable = null;
@@ -20,6 +22,8 @@ public abstract class Presenter<TModel> : MonoBehaviour where TModel : class
 
         if (Model is IStartable)
             _startable = (IStartable)Model;
+
+        SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public virtual void EndInitialize()
@@ -29,7 +33,7 @@ public abstract class Presenter<TModel> : MonoBehaviour where TModel : class
 
     public void Destroy()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void Destroy(Character character)

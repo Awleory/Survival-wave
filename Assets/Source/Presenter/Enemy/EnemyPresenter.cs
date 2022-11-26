@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyTag))]
@@ -10,17 +9,12 @@ public class EnemyPresenter : CharacterPresenter<SimpleEnemy>
 
     public override void Initialize(SimpleEnemy model, int level)
     {
+        Rewards = GetComponent<Rewards>();
+        EnemyTag = GetComponent<EnemyTag>();
+
         base.Initialize(model, level);
 
         EnemyTag.Initialize(model);
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        Rewards = GetComponent<Rewards>();
-        EnemyTag = GetComponent<EnemyTag>();
     }
 
     protected override void OnEnable()
@@ -29,11 +23,17 @@ public class EnemyPresenter : CharacterPresenter<SimpleEnemy>
 
         Model.Attacked += OnAttacked;
     }
+
     protected override void OnDisable()
     {
         base.OnDisable();
 
         Model.Attacked -= OnAttacked;
+    }
+
+    public void Respawn(Vector2 newPosition, int level = 0)
+    {
+        Model.Respawn(newPosition, true, level);
     }
 
     protected override void OnDying()

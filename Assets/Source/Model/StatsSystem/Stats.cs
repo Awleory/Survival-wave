@@ -76,7 +76,7 @@ public class Stats : IStartable
 
     public void UpLevel()
     {
-        if (Level >= MaxLevel)
+        if (LevelIsCorrect(Level + 1) == false)
             return;
 
         CurrentExp = 0;
@@ -84,10 +84,17 @@ public class Stats : IStartable
 
         Update();
 
-        if (Level == MaxLevel)
-            CurrentExp = (int)ExpRequired.Value;
-
         LevelUp?.Invoke();
+    }
+
+    public void SetLevel(int level)
+    {
+        if (LevelIsCorrect(level) == false)
+            return;
+
+        Level = level;
+        CurrentExp = 0;
+        Update();
     }
 
     public string GetStatsInfo()
@@ -98,6 +105,14 @@ public class Stats : IStartable
             statsInfo += attribute.Label + " - " + attribute.Value + "\n";
         }
         return statsInfo;
+    }
+
+    private bool LevelIsCorrect(int level)
+    {
+        if (level > MaxLevel || level < MinLevel)
+            return false;
+
+        return true;
     }
 
     private float GetResist()
@@ -116,7 +131,10 @@ public class Stats : IStartable
         {
             attribute.Update(Level);
         }
-        
+
+        if (Level == MaxLevel)
+            CurrentExp = (int)ExpRequired.Value;
+
         Updated?.Invoke();
     }
 }

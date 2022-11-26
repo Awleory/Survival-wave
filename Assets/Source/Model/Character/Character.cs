@@ -87,11 +87,16 @@ public abstract class Character : IUpdateble, IStartable, IEnable
         _health.Kill();
     }
 
-    public void Respawn(Vector2 spawnPoint, bool restoreHealth)
+    public void Respawn(Vector2 spawnPoint, bool restoreHealth = true, int level = 0)
     {
         Movement.SetPosition(spawnPoint);
         if (restoreHealth)
             _health.Restore();
+
+        _movement.UnFreeze();
+
+        if (level > 0)
+            _stats.SetLevel(level);
     }
 
     public void Destroy()
