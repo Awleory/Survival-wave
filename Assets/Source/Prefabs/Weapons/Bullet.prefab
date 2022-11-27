@@ -165,7 +165,7 @@ MonoBehaviour:
   _isPureDamage: 1
   _speed: 20
   _maxTargetHits: 3
-  _lifeTime: 4
+  _lifeTime: 2
 --- !u!95 &339097160779017421
 Animator:
   serializedVersion: 4

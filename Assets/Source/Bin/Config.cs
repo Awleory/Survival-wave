@@ -10,4 +10,5 @@ public static class Config
     public const int ResolutionY = 1080;
     public const float BaseExpNeed = 100;
     public const float MaxExpNeed = 1000 * MaxCharacterLevel;
+    public const float Volume = 0.02f;
 }

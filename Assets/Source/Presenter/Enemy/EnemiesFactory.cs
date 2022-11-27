@@ -48,7 +48,7 @@ public class EnemiesFactory : ObjectPool<EnemyPresenter>
                 enemyPresenter.EndInitialize();
             }
    
-            enemyPresenter.Respawn(position, level);
+            enemyPresenter.Respawn(position, true, level);
             result = enemyPresenter;
         }
 

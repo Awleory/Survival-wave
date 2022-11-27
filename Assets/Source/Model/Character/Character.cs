@@ -54,7 +54,7 @@ public abstract class Character : IUpdateble, IStartable, IEnable
     public virtual void OnDisable()
     {
         _health.Died -= OnDied;
-        _stats.Health.ValueChanged += OnHealthAttributeChanged;
+        _stats.Health.ValueChanged -= OnHealthAttributeChanged;
         _stats.MoveSpeed.ValueChanged -= OnRunSpeedAttributeChanged;
     }
 
@@ -87,7 +87,7 @@ public abstract class Character : IUpdateble, IStartable, IEnable
         _health.Kill();
     }
 
-    public void Respawn(Vector2 spawnPoint, bool restoreHealth = true, int level = 0)
+    public virtual void Respawn(Vector2 spawnPoint, bool restoreHealth = true, int level = 0)
     {
         Movement.SetPosition(spawnPoint);
         if (restoreHealth)

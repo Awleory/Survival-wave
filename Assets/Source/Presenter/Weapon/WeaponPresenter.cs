@@ -2,13 +2,16 @@ using UnityEngine;
 
 [RequireComponent(typeof(AnimationController))]
 [RequireComponent(typeof(BulletsFactory))]
+[RequireComponent(typeof(AudioSource))]
 public class WeaponPresenter : Presenter<Weapon>
 {
     [SerializeField] private float _shootsPerSecond;
     [SerializeField] private BulletPresenter _bulletPresenter;
     [SerializeField] private Transform _gunPoint;
+    [SerializeField] private AudioClip _shootSound;
     
     private BulletsFactory _bulletsFactory;
+    private AudioSource _auidoSource;
 
     public AnimationController AnimationController { get; private set; }
 
@@ -39,6 +42,8 @@ public class WeaponPresenter : Presenter<Weapon>
     private void Awake()
     {
         AnimationController = GetComponent<AnimationController>();
+        _auidoSource = GetComponent<AudioSource>();
+        _auidoSource.volume = Config.Volume;
     }
 
     protected override void OnEnable()
@@ -64,6 +69,8 @@ public class WeaponPresenter : Presenter<Weapon>
             Quaternion rotation = _bulletPresenter.transform.rotation * Quaternion.Euler(transform.eulerAngles);
             bulletPresenter.Respawn(_gunPoint.position, rotation, _direction);
             bulletPresenter.gameObject.SetActive(true);
+
+            _auidoSource.PlayOneShot(_shootSound);
         }
     }
 

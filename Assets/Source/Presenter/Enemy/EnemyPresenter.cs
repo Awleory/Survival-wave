@@ -31,11 +31,6 @@ public class EnemyPresenter : CharacterPresenter<SimpleEnemy>
         Model.Attacked -= OnAttacked;
     }
 
-    public void Respawn(Vector2 newPosition, int level = 0)
-    {
-        Model.Respawn(newPosition, true, level);
-    }
-
     protected override void OnDying()
     {
         int rewardExp = (int)(Rewards.BaseExperience + Rewards.BaseExperience * Rewards.ExperienceRatePerLevel * Model.Stats.Level);

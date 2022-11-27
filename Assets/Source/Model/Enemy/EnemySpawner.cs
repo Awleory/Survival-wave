@@ -67,6 +67,12 @@ public class EnemySpawner : IEnable
         return newEnemy;
     }
 
+    public void Reset()
+    {
+        for (int i = 0; i < _spawnedEnemies.Count; i++)
+            _spawnedEnemies[i].Destroy();
+    }
+
     private List<Vector2> CreateSpawnPoints()
     {
         float circleDegrees = 360;

@@ -18,6 +18,7 @@ public class AnimationController : MonoBehaviour
     private const string _deathParameter = "Death";
     private const string _hitParameter = "Hit";
     private const string _attackParameter = "Attack";
+    private const string _aliveParameter = "Alive";
 
     private void Awake()
     {
@@ -47,6 +48,11 @@ public class AnimationController : MonoBehaviour
     public void OnDying()
     {
         _animator.SetTrigger(_deathParameter);
+    }
+
+    public void OnAlive()
+    {
+        _animator.SetTrigger(_aliveParameter);
     }
 
     public void OnGotHit()

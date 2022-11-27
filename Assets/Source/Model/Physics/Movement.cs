@@ -53,6 +53,7 @@ public class Movement : IMovable, IUpdateble
     public void SetPosition(Vector2 newPosition)
     {
         Position = newPosition;
+        Moved?.Invoke();
     }
 
     public void OnSpeedChanged(float speed)

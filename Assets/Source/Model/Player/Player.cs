@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 public class Player : Character
 {
@@ -59,6 +60,12 @@ public class Player : Character
             CurrentWeapon = weapon;
     }
 
+    public override void Respawn(Vector2 spawnPoint, bool restoreHealth = true, int level = 0)
+    {
+        base.Respawn(spawnPoint, restoreHealth, level);
+        _controller.UnFreeze();
+    }
+
     private void OnShoot()
     {
         if (IsAlive)
@@ -95,9 +102,8 @@ public class Player : Character
 
     protected override void OnDied()
     {
-        base.OnDied();
-
         _controller.Freeze();
+        base.OnDied();
     }
 }
 

@@ -32,7 +32,7 @@ public class EnemySpawnerPresenter : Presenter<EnemySpawner>
     protected override void Update()
     {
         base.Update();
-        if (_spawnCoroutine == null)
+        if (_spawnCoroutine == null && _enable)
             _spawnCoroutine = StartCoroutine(SpawnCoroutine(_delay));
     }
 
@@ -40,6 +40,11 @@ public class EnemySpawnerPresenter : Presenter<EnemySpawner>
     {
         if (_enable)
             base.EndInitialize();
+    }
+
+    public void Respawn()
+    {
+        _enemySpawner.Reset();
     }
 
     private IEnumerator SpawnCoroutine(WaitForSeconds delay)

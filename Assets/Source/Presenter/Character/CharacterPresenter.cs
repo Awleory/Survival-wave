@@ -4,9 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterStatsConfig))]
 [RequireComponent (typeof(BoxCollider2D))]
 [RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(AudioSource))]
 public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Character
 {
     [SerializeField] private FillBarUI _healthBarUI;
+    [SerializeField] private AudioClip _gotDamageSound;
+
+    private AudioSource _audioSource;
 
     public AnimationController AnimationController { get; private set; }
 
@@ -32,6 +36,8 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
     protected virtual void Awake()
     {
         AnimationController = GetComponent<AnimationController>();
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = Config.Volume;
     }
 
     protected override void OnEnable()
@@ -62,6 +68,12 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
         AnimationController.DeathAnimEnded -= OnDied;
     }
 
+    public virtual void Respawn(Vector2 positon, bool restoreHealth = true, int level = 0)
+    {
+        Model.Respawn(positon, restoreHealth, level);
+        AnimationController.OnAlive();
+    }
+
     private void OnMoved()
     {
         transform.position = Model.Movement.Position; 
@@ -82,6 +94,7 @@ public class CharacterPresenter<TModel> : Presenter<TModel> where TModel : Chara
     private void OnGotDamage()
     {
         AnimationController.OnGotHit();
+        _audioSource.PlayOneShot(_gotDamageSound);
     }
 
     protected virtual void OnDying()
